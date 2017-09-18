@@ -9,7 +9,12 @@ Portable and multi-tabbed terminal for Windows
 * Drag n' drop file/folder support
 * Keyboard shortcuts for adding/removing tabs
 
+## Downloads: ##
+https://github.com/hellzerg/moonshell/releases
+
 ## Compatibility: ##
+
+.NET Framework 4.5.2
 
 Compatible with Windows 7, 8, 8.1, 10
 
