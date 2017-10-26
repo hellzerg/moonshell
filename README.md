@@ -19,7 +19,7 @@ https://github.com/hellzerg/moonshell/releases
 * Also compatible with Windows Server 2008, 2012, 2016
 * Does not work with Windows XP or Vista or Windows Server 2003
 
-## Version: ##
+## Details: ##
 
 * Latest version: 1.8
 * Released: October 26, 2017
