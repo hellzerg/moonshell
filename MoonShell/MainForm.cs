@@ -16,7 +16,10 @@ namespace MoonShell
     public partial class MainForm : Form
     {
         internal static string WorkingDirectory = string.Empty;
-        int tabCounter = 0;
+
+        int _tabCounter = 0;
+
+        ConsoleControl _currentTab;
 
         public static bool IsAdmin
         {
@@ -28,70 +31,66 @@ namespace MoonShell
 
         internal void AddTab()
         {
-            ConsoleControl cc = new ConsoleControl(this);
-            cc.BackColor = Options.CurrentOptions.BackgroundColor;
-            cc.ForeColor = Options.CurrentOptions.ForegroundColor;
-            cc.ErrorColor = Options.CurrentOptions.ErrorColor;
-            cc.Font = Options.CurrentOptions.Font;
-            cc.InternalRichTextBox.ContextMenuStrip = helperMenu;
-            cc.InternalRichTextBox.AllowDrop = true;
-            cc.InternalRichTextBox.DragEnter += MainForm_DragEnter;
-            cc.InternalRichTextBox.DragDrop += MainForm_DragDrop;
+            _currentTab = new ConsoleControl(this);
+            _currentTab.BackColor = Options.CurrentOptions.BackgroundColor;
+            _currentTab.ForeColor = Options.CurrentOptions.ForegroundColor;
+            _currentTab.ErrorColor = Options.CurrentOptions.ErrorColor;
+            _currentTab.Font = Options.CurrentOptions.Font;
+            _currentTab.InternalRichTextBox.ContextMenuStrip = helperMenu;
+            _currentTab.InternalRichTextBox.AllowDrop = true;
+            _currentTab.InternalRichTextBox.DragEnter += MainForm_DragEnter;
+            _currentTab.InternalRichTextBox.DragDrop += MainForm_DragDrop;
             
-            tabCounter++;
+            _tabCounter++;
             TabPage tab = new TabPage();
-            tab.Text = "Console " + tabCounter;
+            tab.Text = "Console " + _tabCounter;
+
             tab.BackColor = Options.CurrentOptions.BackgroundColor;
             tab.ForeColor = Options.CurrentOptions.ForegroundColor;
 
-            Tabs.TabPages.Add(tab);
-            cc.Dock = DockStyle.Fill;
-            tab.Controls.Add(cc);
-            cc.Dock = DockStyle.Fill;
+            tabConsoles.TabPages.Add(tab);
+            _currentTab.Dock = DockStyle.Fill;
+            tab.Controls.Add(_currentTab);
+            _currentTab.Dock = DockStyle.Fill;
 
-            Tabs.SelectedTab = tab;
-            cc.Select();
+            tabConsoles.SelectedTab = tab;
+            _currentTab.Select();
 
-            cc.StartProcess("cmd", WorkingDirectory);
+            _currentTab.StartProcess("cmd", WorkingDirectory);
         }
 
         internal void RemoveTab()
         {
-            if (Tabs.TabPages.Count > 1)
+            if (tabConsoles.TabPages.Count > 1)
             {
-                var cc = Tabs.SelectedTab.Controls.OfType<ConsoleControl>().FirstOrDefault();
-                cc.StopProcess();
-                Tabs.TabPages.Remove(Tabs.SelectedTab);
+                if (_currentTab != null)
+                {
+                    _currentTab.StopProcess();
+                    tabConsoles.TabPages.Remove(tabConsoles.SelectedTab);
+                }  
             }
         }
 
         internal void ClearTab()
         {
-            var cc = Tabs.SelectedTab.Controls.OfType<ConsoleControl>().FirstOrDefault();
-            cc.ClearOutput();
+            if (_currentTab != null)
+            {
+                _currentTab.ClearOutput();
+                _currentTab.Focus();
+            }
         }
-
-        //private void FixColor()
-        //{
-        //    foreach (ToolStripItem item2 in helperMenu.Items)
-        //    {
-        //        item2.ForeColor = Options.CurrentOptions.ForegroundColor;
-        //    }
-        //}
 
         private void ApplyOptions()
         {
-            foreach (TabPage tab in Tabs.TabPages)
+            foreach (TabPage tab in tabConsoles.TabPages)
             {
-                foreach (ConsoleControl cmd in tab.Controls.OfType<ConsoleControl>())
+                foreach (ConsoleControl cc in tab.Controls.OfType<ConsoleControl>())
                 {
-                    cmd.Font = Options.CurrentOptions.Font;
-                    cmd.ForeColor = Options.CurrentOptions.ForegroundColor;
-                    cmd.BackColor = Options.CurrentOptions.BackgroundColor;
+                    cc.Font = Options.CurrentOptions.Font;
+                    cc.ForeColor = Options.CurrentOptions.ForegroundColor;
+                    cc.BackColor = Options.CurrentOptions.BackgroundColor;
                 }
             }
-
-            //FixColor();
         }
 
         internal void NewWindow()
@@ -110,6 +109,7 @@ namespace MoonShell
                 ProcessStartInfo info = new ProcessStartInfo(Path.Combine(Application.StartupPath + "\\" + AppDomain.CurrentDomain.FriendlyName));
                 info.UseShellExecute = true;
                 info.Verb = "runas";
+
                 Process.Start(info);
             }
             catch { }
@@ -117,32 +117,38 @@ namespace MoonShell
 
         private void Copy()
         {
-            try
+            if (_currentTab != null)
             {
-                var cc = Tabs.SelectedTab.Controls.OfType<ConsoleControl>().FirstOrDefault();
-                Clipboard.SetText(cc.InternalRichTextBox.SelectedText);
+                try
+                {
+                    Clipboard.SetText(_currentTab.InternalRichTextBox.SelectedText);
+                }
+                catch { }
             }
-            catch { }
         }
 
         private void CopyAll()
         {
-            try
+            if (_currentTab != null)
             {
-                var cc = Tabs.SelectedTab.Controls.OfType<ConsoleControl>().FirstOrDefault();
-                Clipboard.SetText(cc.InternalRichTextBox.Text);
+                try
+                {
+                    Clipboard.SetText(_currentTab.InternalRichTextBox.Text);
+                }
+                catch { }
             }
-            catch { }
         }
 
         private void Paste()
         {
-            try
+            if (_currentTab != null)
             {
-                var cc = Tabs.SelectedTab.Controls.OfType<ConsoleControl>().FirstOrDefault();
-                cc.InternalRichTextBox.AppendText(Clipboard.GetText());
-            } 
-            catch { }
+                try
+                {
+                    _currentTab.InternalRichTextBox.AppendText(Clipboard.GetText());
+                }
+                catch { }
+            }
         }
 
         internal void ShowOptions()
@@ -155,7 +161,7 @@ namespace MoonShell
 
         internal void ShowThemes()
         {
-            ThemeForm f = new ThemeForm(this);
+            ThemesForm f = new ThemesForm(this);
             f.ShowDialog(this);
         }
 
@@ -177,15 +183,13 @@ namespace MoonShell
             if (IsAdmin)
             {
                 WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.System);
-                this.Text = "Administrator: MoonShell " + Program.GetCurrentVersionToString();
+                this.Text = "Administrator: MoonShell " + Program.GetCurrentVersion();
             }
             else
             {
                 WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                this.Text = "MoonShell " + Program.GetCurrentVersionToString();
+                this.Text = "MoonShell " + Program.GetCurrentVersion();
             }
-
-            //FixColor();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -221,16 +225,31 @@ namespace MoonShell
         private void button7_Click(object sender, EventArgs e)
         {
             ShowAboutDialog();
+            
+            if (_currentTab != null)
+            {
+                _currentTab.Focus();
+            }
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
             ShowThemes();
+            
+            if (_currentTab != null)
+            {
+                _currentTab.Focus();
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             ShowOptions();
+            
+            if (_currentTab != null)
+            {
+                _currentTab.Focus();
+            }
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -286,20 +305,22 @@ namespace MoonShell
         private void MainForm_DragDrop(object sender, DragEventArgs e)
         {
             string[] sa = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            var cc = Tabs.SelectedTab.Controls.OfType<ConsoleControl>().FirstOrDefault();
 
-            try
+            if (_currentTab != null)
             {
-                if (Directory.Exists(sa[0]))
+                try
                 {
-                    cc.InternalRichTextBox.AppendText("\"" + sa[0] + "\"");
+                    if (Directory.Exists(sa[0]))
+                    {
+                        _currentTab.InternalRichTextBox.AppendText("\"" + sa[0] + "\"");
+                    }
+                    if (File.Exists(sa[0]))
+                    {
+                        _currentTab.InternalRichTextBox.AppendText(sa[0]);
+                    }
                 }
-                if (File.Exists(sa[0]))
-                {
-                    cc.InternalRichTextBox.AppendText(sa[0]);
-                }
+                catch { }
             }
-            catch { }
         }
 
         private void MainForm_DragEnter(object sender, DragEventArgs e)
@@ -320,6 +341,16 @@ namespace MoonShell
             {
                 if (e.KeyCode == Keys.T) AddTab();
                 if (e.KeyCode == Keys.W) RemoveTab();
+            }
+        }
+
+        private void Tabs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _currentTab = tabConsoles.SelectedTab.Controls.OfType<ConsoleControl>().FirstOrDefault();
+
+            if (_currentTab != null)
+            {
+                _currentTab.Focus();
             }
         }
     }

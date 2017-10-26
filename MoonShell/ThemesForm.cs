@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace MoonShell
 {
-    public partial class ThemeForm : Form
+    public partial class ThemesForm : Form
     {
-        MainForm _main;
+        MainForm _mainForm;
 
         private void LoadSettings()
         {
@@ -39,10 +39,10 @@ namespace MoonShell
             }
         }
 
-        public ThemeForm(MainForm main)
+        public ThemesForm(MainForm main)
         {
             InitializeComponent();
-            _main = main;
+            _mainForm = main;
 
             LoadSettings();
             Options.ApplyTheme(this);
@@ -52,42 +52,42 @@ namespace MoonShell
         {
             Options.CurrentOptions.Color = Theme.Ocean;
             Options.ApplyTheme(this);
-            Options.ApplyTheme(_main);
+            Options.ApplyTheme(_mainForm);
         }
 
         private void carameltheme_CheckedChanged(object sender, EventArgs e)
         {
             Options.CurrentOptions.Color = Theme.Caramel;
             Options.ApplyTheme(this);
-            Options.ApplyTheme(_main);
+            Options.ApplyTheme(_mainForm);
         }
 
         private void limetheme_CheckedChanged(object sender, EventArgs e)
         {
             Options.CurrentOptions.Color = Theme.Lime;
             Options.ApplyTheme(this);
-            Options.ApplyTheme(_main);
+            Options.ApplyTheme(_mainForm);
         }
 
         private void magmatheme_CheckedChanged(object sender, EventArgs e)
         {
             Options.CurrentOptions.Color = Theme.Magma;
             Options.ApplyTheme(this);
-            Options.ApplyTheme(_main);
+            Options.ApplyTheme(_mainForm);
         }
 
         private void minimaltheme_CheckedChanged(object sender, EventArgs e)
         {
             Options.CurrentOptions.Color = Theme.Minimal;
             Options.ApplyTheme(this);
-            Options.ApplyTheme(_main);
+            Options.ApplyTheme(_mainForm);
         }
 
         private void zergtheme_CheckedChanged(object sender, EventArgs e)
         {
             Options.CurrentOptions.Color = Theme.Zerg;
             Options.ApplyTheme(this);
-            Options.ApplyTheme(_main);
+            Options.ApplyTheme(_mainForm);
         }
 
         private void okbtn_Click(object sender, EventArgs e)

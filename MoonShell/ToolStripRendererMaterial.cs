@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace MoonShell
 {
-    public class ToolStripRendererMaterial : ToolStripProfessionalRenderer
+    internal class ToolStripRendererMaterial : ToolStripProfessionalRenderer
     {
         public ToolStripRendererMaterial() : base(new ColorsMaterial())
         {
@@ -16,7 +16,7 @@ namespace MoonShell
         }
     }
 
-    public class ColorsMaterial : ProfessionalColorTable
+    internal class ColorsMaterial : ProfessionalColorTable
     {
         public override Color ToolStripBorder
         {

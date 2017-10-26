@@ -1,6 +1,6 @@
 ﻿namespace MoonShell
 {
-    partial class ThemeForm
+    partial class ThemesForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ThemeForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ThemesForm));
             this.minimaltheme = new System.Windows.Forms.RadioButton();
             this.carameltheme = new System.Windows.Forms.RadioButton();
             this.limetheme = new System.Windows.Forms.RadioButton();

@@ -28,7 +28,7 @@ namespace MoonShell
         {
             CheckForIllegalCrossThreadCalls = false;
 
-            textBox1.AppendText("Type 'exit' to close MoonShell\n");
+            textBox1.AppendText("Type 'exit' or 'quit' to close MoonShell\n");
             textBox1.AppendText("Type 'clear' or 'cls' to clear the screen\n");
             textBox1.AppendText("Type '!!' to execute the last command\n");
             textBox1.AppendText("Type 'add' or 'remove' to add or remove tabs\n");
@@ -163,7 +163,7 @@ namespace MoonShell
 
         private void l2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://5.249.159.211/deadmoon");
+            Process.Start("https://carcinos.eu/deadmoon");
         }
     }
 }

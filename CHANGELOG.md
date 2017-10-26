@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8] - 2017-10-26
+- General improvements
+
 ## [1.7] - 2017-04-03
 - Added CTRL+T shortcut to add new tab
 - Added CTRL+W shortcut to remove a tab

@@ -26,13 +26,13 @@ namespace MoonShell
 
         // Stores the current line.
         // Used while navigating the previous commands list.
-        //private static int? currentLine = null;
+        // static int? currentLine = null;
 
         // Stores all the used commands.
-        //public static ArrayList History = new ArrayList();
+        // public static ArrayList History = new ArrayList();
 
         // Stores the last used command.
-        private string lastCommand = string.Empty;
+        string _lastCommand = string.Empty;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsoleControl"/> class.
@@ -224,16 +224,21 @@ namespace MoonShell
                 //}
 
                 // Custom command processing
-                if (input.Trim() == "exit")
+
+                if (input.Trim() == "ls")
+                {
+                    input = "dir";
+                }
+                if (input.Trim() == "exit" || input.Trim() == "quit")
                 {
                     input = string.Empty;
                     Application.Exit();
                 }
                 if (input.Trim() == "!!")
                 {
-                    if (!string.IsNullOrEmpty(lastCommand))
+                    if (!string.IsNullOrEmpty(_lastCommand))
                     {
-                        input = lastCommand;
+                        input = _lastCommand;
                     }
                     else
                     {
@@ -283,7 +288,8 @@ namespace MoonShell
 
                 //  Write the input (without echoing).
                 WriteInput(input, ForeColor, false);
-                if (input != "!!") lastCommand = input;
+
+                if (input != "!!") _lastCommand = input;
             }
         }
 

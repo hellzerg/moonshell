@@ -18,6 +18,7 @@ namespace MoonShell
         public Color ForegroundColor { get; set; }
         public Color ErrorColor { get; set; }
         public Font Font { get; set; }
+
         //public int X { get; set; }
         //public int Y { get; set; }
 
@@ -29,25 +30,12 @@ namespace MoonShell
         internal static Color ForegroundColor = Color.MediumOrchid;
         internal static Color ForegroundAccentColor = Color.DarkOrchid;
 
-        readonly static string SettingsFile = Application.StartupPath + "\\MoonShell.json";
+        readonly static string _settingsFile = Application.StartupPath + "\\MoonShell.json";
         internal static SettingsJson CurrentOptions = new SettingsJson();
         internal readonly static string ThemeFlag = "themeable";
 
         // use this to determine if changes have been made
-        private static SettingsJson Flag = new SettingsJson();
-
-        internal static IEnumerable<Control> GetSelfAndChildrenRecursive(Control parent)
-        {
-            List<Control> controls = new List<Control>();
-
-            foreach (Control child in parent.Controls)
-            {
-                controls.AddRange(GetSelfAndChildrenRecursive(child));
-            }
-
-            controls.Add(parent);
-            return controls;
-        }
+        static SettingsJson _flag = new SettingsJson();
 
         internal static void ApplyTheme(Form f)
         {
@@ -79,19 +67,19 @@ namespace MoonShell
             ForegroundColor = c1;
             ForegroundAccentColor = c2;
 
-            GetSelfAndChildrenRecursive(f).OfType<Button>().ToList().ForEach(b => b.BackColor = c1);
-            GetSelfAndChildrenRecursive(f).OfType<Button>().ToList().ForEach(b => b.FlatAppearance.BorderColor = c1);
-            GetSelfAndChildrenRecursive(f).OfType<Button>().ToList().ForEach(b => b.FlatAppearance.MouseDownBackColor = c2);
-            GetSelfAndChildrenRecursive(f).OfType<Button>().ToList().ForEach(b => b.FlatAppearance.MouseOverBackColor = c2);
+            Utilities.GetSelfAndChildrenRecursive(f).OfType<Button>().ToList().ForEach(b => b.BackColor = c1);
+            Utilities.GetSelfAndChildrenRecursive(f).OfType<Button>().ToList().ForEach(b => b.FlatAppearance.BorderColor = c1);
+            Utilities.GetSelfAndChildrenRecursive(f).OfType<Button>().ToList().ForEach(b => b.FlatAppearance.MouseDownBackColor = c2);
+            Utilities.GetSelfAndChildrenRecursive(f).OfType<Button>().ToList().ForEach(b => b.FlatAppearance.MouseOverBackColor = c2);
 
-            foreach (Label tmp in GetSelfAndChildrenRecursive(f).OfType<Label>().ToList())
+            foreach (Label tmp in Utilities.GetSelfAndChildrenRecursive(f).OfType<Label>().ToList())
             {
                 if ((string)tmp.Tag == ThemeFlag)
                 {
                     tmp.ForeColor = c1;
                 }
             }
-            foreach (LinkLabel tmp in GetSelfAndChildrenRecursive(f).OfType<LinkLabel>().ToList())
+            foreach (LinkLabel tmp in Utilities.GetSelfAndChildrenRecursive(f).OfType<LinkLabel>().ToList())
             {
                 if ((string)tmp.Tag == ThemeFlag)
                 {
@@ -100,7 +88,7 @@ namespace MoonShell
                     tmp.ActiveLinkColor = c2;
                 }
             }
-            foreach (CheckBox tmp in GetSelfAndChildrenRecursive(f).OfType<CheckBox>().ToList())
+            foreach (CheckBox tmp in Utilities.GetSelfAndChildrenRecursive(f).OfType<CheckBox>().ToList())
             {
                 if ((string)tmp.Tag == ThemeFlag)
                 {
@@ -111,15 +99,15 @@ namespace MoonShell
 
         internal static void SaveSettings()
         {
-            if (File.Exists(SettingsFile))
+            if (File.Exists(_settingsFile))
             {
-                File.WriteAllText(SettingsFile, string.Empty);
+                File.WriteAllText(_settingsFile, string.Empty);
 
-                if ((Flag.BackgroundColor != CurrentOptions.BackgroundColor) || (Flag.ForegroundColor != CurrentOptions.ForegroundColor) || (Flag.Font != CurrentOptions.Font) || Flag.Color != CurrentOptions.Color || CurrentOptions.ErrorColor != Flag.ErrorColor)
+                if ((_flag.BackgroundColor != CurrentOptions.BackgroundColor) || (_flag.ForegroundColor != CurrentOptions.ForegroundColor) || (_flag.Font != CurrentOptions.Font) || _flag.Color != CurrentOptions.Color || CurrentOptions.ErrorColor != _flag.ErrorColor)
                 {
                     //CurrentOptions.History = ConsoleControl.History;
 
-                    using (FileStream fs = File.Open(SettingsFile, FileMode.OpenOrCreate))
+                    using (FileStream fs = File.Open(_settingsFile, FileMode.OpenOrCreate))
                     using (StreamWriter sw = new StreamWriter(fs))
                     using (JsonWriter jw = new JsonTextWriter(sw))
                     {
@@ -129,16 +117,12 @@ namespace MoonShell
                         serializer.Serialize(jw, CurrentOptions);
                     }
                 }
-                else
-                {
-                    // no changes have been made, no need to save
-                }
             }
         }
 
         internal static void LoadSettings()
         {
-            if (!File.Exists(SettingsFile))
+            if (!File.Exists(_settingsFile))
             {
                 // default settings
                 CurrentOptions.Font = new Font("Consolas", 10.8F);
@@ -152,7 +136,7 @@ namespace MoonShell
                 //    CurrentOptions.History = ConsoleControl.History;
                 //}
 
-                using (FileStream fs = File.Open(SettingsFile, FileMode.CreateNew))
+                using (FileStream fs = File.Open(_settingsFile, FileMode.CreateNew))
                 using (StreamWriter sw = new StreamWriter(fs))
                 using (JsonWriter jw = new JsonTextWriter(sw))
                 {
@@ -164,7 +148,7 @@ namespace MoonShell
             }
             else
             {
-                CurrentOptions = JsonConvert.DeserializeObject<SettingsJson>(File.ReadAllText(SettingsFile));
+                CurrentOptions = JsonConvert.DeserializeObject<SettingsJson>(File.ReadAllText(_settingsFile));
 
                 //if (CurrentOptions.History != null)
                 //{
@@ -172,11 +156,11 @@ namespace MoonShell
                 //}
 
                 // initialize flag with default settings
-                Flag.Font = new Font("Consolas", 10.8F);
-                Flag.BackgroundColor = Color.Black;
-                Flag.ForegroundColor = Color.Lime;
-                Flag.ErrorColor = Color.Tomato;
-                Flag.Color = Theme.Zerg;
+                _flag.Font = new Font("Consolas", 10.8F);
+                _flag.BackgroundColor = Color.Black;
+                _flag.ForegroundColor = Color.Lime;
+                _flag.ErrorColor = Color.Tomato;
+                _flag.Color = Theme.Zerg;
             }
         }
     }

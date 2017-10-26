@@ -12,22 +12,22 @@ namespace MoonShell
 {
     public partial class OptionsForm : Form
     {
-        FontDialog fontDialog = new FontDialog();
-        ColorDialog colorDialog = new ColorDialog();
-        FontConverter c = new FontConverter();
+        FontDialog _fontDialog = new FontDialog();
+        ColorDialog _colorDialog = new ColorDialog();
+        FontConverter _fontConverter = new FontConverter();
 
-        Color previewBackColor = Options.CurrentOptions.BackgroundColor;
-        Color previewForeColor = Options.CurrentOptions.ForegroundColor;
-        Font previewFont = Options.CurrentOptions.Font;
+        Color _previewBackColor = Options.CurrentOptions.BackgroundColor;
+        Color _previewForeColor = Options.CurrentOptions.ForegroundColor;
+        Font _previewFont = Options.CurrentOptions.Font;
 
         public OptionsForm()
         {
             InitializeComponent();
             Options.ApplyTheme(this);
-            //fontDialog.ShowColor = true;
-            fontDialog.ShowEffects = true;
+           
+            _fontDialog.ShowEffects = true;
 
-            string font = c.ConvertToString(Options.CurrentOptions.Font);
+            string font = _fontConverter.ConvertToString(Options.CurrentOptions.Font);
 
             lblFont.Text = font;
             panelBackColor.BackColor = Options.CurrentOptions.BackgroundColor;
@@ -37,62 +37,59 @@ namespace MoonShell
             lblPreview.BackColor = Options.CurrentOptions.BackgroundColor;
         }
 
-        private void Default()
+        private void ResetToDefault()
         {
-            previewFont = new Font("Consolas", 11F);
-            previewBackColor = Color.Black;
-            previewForeColor = Color.Lime;
+            _previewFont = new Font("Consolas", 11F);
+            _previewBackColor = Color.Black;
+            _previewForeColor = Color.Lime;
 
-            lblFont.Text = c.ConvertToInvariantString(previewFont);
-            panelBackColor.BackColor = previewBackColor;
-            panelForeColor.BackColor = previewForeColor;
-            lblPreview.Font = previewFont;
-            lblPreview.ForeColor = previewForeColor;
-            lblPreview.BackColor = previewBackColor;
+            lblFont.Text = _fontConverter.ConvertToInvariantString(_previewFont);
+            panelBackColor.BackColor = _previewBackColor;
+            panelForeColor.BackColor = _previewForeColor;
+            lblPreview.Font = _previewFont;
+            lblPreview.ForeColor = _previewForeColor;
+            lblPreview.BackColor = _previewBackColor;
         }
 
         private void SaveOptions()
         {
-            Options.CurrentOptions.Font = previewFont;
-            Options.CurrentOptions.ForegroundColor = previewForeColor;
-            Options.CurrentOptions.BackgroundColor = previewBackColor;
+            Options.CurrentOptions.Font = _previewFont;
+            Options.CurrentOptions.ForegroundColor = _previewForeColor;
+            Options.CurrentOptions.BackgroundColor = _previewBackColor;
 
             this.Close();
         }
 
         private void PreviewFont()
         {
-            if (fontDialog.ShowDialog() == DialogResult.OK)
+            if (_fontDialog.ShowDialog() == DialogResult.OK)
             {
-                lblFont.Text = c.ConvertToInvariantString(fontDialog.Font);
-                lblPreview.Font = fontDialog.Font;
-                //panelForeColor.BackColor = fontDialog.Color;
-                //lblPreview.ForeColor = fontDialog.Color;
-
-                //previewForeColor = fontDialog.Color;
-                previewFont = fontDialog.Font;
+                lblFont.Text = _fontConverter.ConvertToInvariantString(_fontDialog.Font);
+                lblPreview.Font = _fontDialog.Font;
+                
+                _previewFont = _fontDialog.Font;
             }
         }
 
         private void PreviewTextColor()
         {
-            if (colorDialog.ShowDialog() == DialogResult.OK)
+            if (_colorDialog.ShowDialog() == DialogResult.OK)
             {
-                panelForeColor.BackColor = colorDialog.Color;
-                lblPreview.ForeColor = colorDialog.Color;
+                panelForeColor.BackColor = _colorDialog.Color;
+                lblPreview.ForeColor = _colorDialog.Color;
 
-                previewForeColor = colorDialog.Color;
+                _previewForeColor = _colorDialog.Color;
             }
         }
 
         private void PreviewBackgroundColor()
         {
-            if (colorDialog.ShowDialog() == DialogResult.OK)
+            if (_colorDialog.ShowDialog() == DialogResult.OK)
             {
-                panelBackColor.BackColor = colorDialog.Color;
-                lblPreview.BackColor = colorDialog.Color;
+                panelBackColor.BackColor = _colorDialog.Color;
+                lblPreview.BackColor = _colorDialog.Color;
 
-                previewBackColor = colorDialog.Color;
+                _previewBackColor = _colorDialog.Color;
             }
         }
 
@@ -143,7 +140,7 @@ namespace MoonShell
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Default();
+            ResetToDefault();
         }
     }
 }
