@@ -110,9 +110,6 @@ namespace MoonShell
             tab.Controls.Add(_currentTab);
             _currentTab.Dock = DockStyle.Fill;
 
-            tabConsoles.SelectedTab = tab;
-            _currentTab.Select();
-
             if (!string.IsNullOrEmpty(placeDirectory))
             {
                 _currentTab.StartProcess("cmd", placeDirectory);
@@ -121,6 +118,9 @@ namespace MoonShell
             {
                 _currentTab.StartProcess("cmd", WorkingDirectory);
             }
+
+            tabConsoles.SelectedTab = tab;
+            _currentTab.Focus();
         }
 
         internal void RemoveTab()
