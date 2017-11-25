@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace MoonShell
 {
@@ -26,6 +27,7 @@ namespace MoonShell
             Options.ApplyTheme(this);
            
             _fontDialog.ShowEffects = true;
+            _fontDialog.Font = Options.CurrentOptions.Font;
 
             string font = _fontConverter.ConvertToString(Options.CurrentOptions.Font);
 
@@ -35,6 +37,18 @@ namespace MoonShell
             lblPreview.Font = Options.CurrentOptions.Font;
             lblPreview.ForeColor = Options.CurrentOptions.ForegroundColor;
             lblPreview.BackColor = Options.CurrentOptions.BackgroundColor;
+
+            LoadPlaces();
+        }
+
+        private void LoadPlaces()
+        {
+            listPlaces.Items.AddRange(Options.CurrentOptions.Places.ToArray());
+
+            if (!string.IsNullOrEmpty(Options.CurrentOptions.StartingDirectory))
+            {
+                listPlaces.Text = Options.CurrentOptions.StartingDirectory;
+            }
         }
 
         private void ResetToDefault()
@@ -57,7 +71,23 @@ namespace MoonShell
             Options.CurrentOptions.ForegroundColor = _previewForeColor;
             Options.CurrentOptions.BackgroundColor = _previewBackColor;
 
-            this.Close();
+            if (!string.IsNullOrEmpty(listPlaces.Text))
+            {
+                if (Directory.Exists(listPlaces.Text))
+                {
+                    Options.CurrentOptions.StartingDirectory = listPlaces.Text;
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("This directory does not exist!", "MoonShell", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            else
+            {
+                Options.CurrentOptions.StartingDirectory = string.Empty;
+                this.Close();
+            }
         }
 
         private void PreviewFont()
@@ -73,6 +103,7 @@ namespace MoonShell
 
         private void PreviewTextColor()
         {
+            _colorDialog.Color = Options.CurrentOptions.ForegroundColor;
             if (_colorDialog.ShowDialog() == DialogResult.OK)
             {
                 panelForeColor.BackColor = _colorDialog.Color;
@@ -84,6 +115,7 @@ namespace MoonShell
 
         private void PreviewBackgroundColor()
         {
+            _colorDialog.Color = Options.CurrentOptions.BackgroundColor;
             if (_colorDialog.ShowDialog() == DialogResult.OK)
             {
                 panelBackColor.BackColor = _colorDialog.Color;

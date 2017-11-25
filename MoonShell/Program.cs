@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace MoonShell
 {
@@ -14,7 +15,7 @@ namespace MoonShell
 
         // Enter current version here
         internal readonly static float Major = 1;
-        internal readonly static float Minor = 8;
+        internal readonly static float Minor = 9;
 
         /* END OF VERSION PROPERTIES */
 
@@ -35,7 +36,35 @@ namespace MoonShell
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
             Options.LoadSettings();
-            Application.Run(new MainForm());
+
+            //if (args.Length > 0)
+            //{
+            //    for (int i = 0; i < args.Length; i++)
+            //    {
+            //        args[i] = args[i].Trim();
+            //    }
+            //}
+
+            if (args.Length == 0)
+            {
+                Application.Run(new MainForm());
+            }
+            else if (args.Length == 1)
+            {
+                args[0] = args[0].Trim();
+
+                if (!string.IsNullOrEmpty(args[0]))
+                {
+                    if (Directory.Exists(args[0]))
+                    {
+                        Application.Run(new MainForm(args[0]));
+                    }
+                    else
+                    {
+                        MessageBox.Show("This directory does not exist!", "MoonShell", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
         }
 
         static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)

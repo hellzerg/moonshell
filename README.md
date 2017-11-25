@@ -8,6 +8,10 @@ Portable and multi-tabbed terminal for Windows
 * Each tab is running on its own process, independently
 * Drag n' drop file/folder support
 * Keyboard shortcuts for adding/removing tabs
+* Quick access to your favorite directories
+* Customizable starting directory
+* Window state persistence supported
+* Export logs
 
 ## Downloads: ##
 https://github.com/hellzerg/moonshell/releases

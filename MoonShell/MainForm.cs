@@ -17,6 +17,8 @@ namespace MoonShell
     {
         internal static string WorkingDirectory = string.Empty;
 
+        string _logsDirectory = Application.StartupPath + "\\Logs\\";
+
         int _tabCounter = 0;
 
         ConsoleControl _currentTab;
@@ -29,7 +31,62 @@ namespace MoonShell
             }
         }
 
-        internal void AddTab()
+        private void RestoreWindowState()
+        {
+            this.WindowState = Options.CurrentOptions.WindowState;
+            this.Size = Options.CurrentOptions.WindowSize;
+
+            if (Options.CurrentOptions.WindowLocation != null)
+            {
+                this.Location = (Point)Options.CurrentOptions.WindowLocation;
+            }
+            else
+            {
+                this.CenterToScreen();
+            }
+        }
+
+        private void SaveWindowState()
+        {
+            Options.CurrentOptions.WindowState = this.WindowState;
+
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                Options.CurrentOptions.WindowLocation = this.Location;
+                Options.CurrentOptions.WindowSize = this.Size;
+            }
+            else
+            {
+                Options.CurrentOptions.WindowLocation = this.RestoreBounds.Location;
+                Options.CurrentOptions.WindowSize = this.RestoreBounds.Size;
+            }
+
+        }
+
+        internal void ExportLog()
+        {
+            if (_currentTab != null)
+            {
+                if (!Directory.Exists(_logsDirectory))
+                {
+                    Directory.CreateDirectory(_logsDirectory);
+                }
+
+                string fileName = string.Format("{0}-{1}-{2} - {3}.{4}.{5}.log", DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+
+                try
+                {
+                    File.WriteAllText(_logsDirectory + fileName, _currentTab.InternalRichTextBox.Text, Encoding.UTF8);
+                    MessageBox.Show("Log file created in Logs folder!", "MoonShell", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Log file couldn't be created:\n\n" + ex.Message, "MoonShell", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        internal void AddTab(string placeDirectory = null)
         {
             _currentTab = new ConsoleControl(this);
             _currentTab.BackColor = Options.CurrentOptions.BackgroundColor;
@@ -56,7 +113,14 @@ namespace MoonShell
             tabConsoles.SelectedTab = tab;
             _currentTab.Select();
 
-            _currentTab.StartProcess("cmd", WorkingDirectory);
+            if (!string.IsNullOrEmpty(placeDirectory))
+            {
+                _currentTab.StartProcess("cmd", placeDirectory);
+            }
+            else
+            {
+                _currentTab.StartProcess("cmd", WorkingDirectory);
+            }
         }
 
         internal void RemoveTab()
@@ -171,14 +235,59 @@ namespace MoonShell
             f.ShowDialog(this);
         }
 
-        public MainForm()
+        internal void LoadPlaces()
+        {
+            placesMenu.Items.Clear();
+
+            foreach (string x in Options.CurrentOptions.Places)
+            {
+                ToolStripItem i = new ToolStripMenuItem();
+
+                if (placesMenu.Items.Count <= 0)
+                {
+                    i.Text = "1) " + x;
+                }
+                else
+                {
+                    i.Text = string.Format("{0}) {1}", placesMenu.Items.Count + 1, x);
+                }
+
+                i.ForeColor = Color.White;
+                i.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+
+                i.Click += Place_Click;
+
+                placesMenu.Items.Add(i);
+            }
+        }
+
+        private void Place_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem item = (ToolStripMenuItem)sender;
+
+            if (Directory.Exists(item.Text.Substring(3)))
+            {
+                AddTab(item.Text.Substring(3));
+            }
+            else
+            {
+                MessageBox.Show("This directory no longer exists!", "MoonShell", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        public MainForm(string customDirectory = null)
         {
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
+
             Options.ApplyTheme(this);
+
             helperMenu.Renderer = new ToolStripRendererMaterial();
+            placesMenu.Renderer = new ToolStripRendererMaterial();
 
             this.KeyPreview = true;
+
+            LoadPlaces();
 
             if (IsAdmin)
             {
@@ -190,10 +299,31 @@ namespace MoonShell
                 WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                 this.Text = "MoonShell " + Program.GetCurrentVersion();
             }
+
+            if (!string.IsNullOrEmpty(customDirectory))
+            {
+                WorkingDirectory = customDirectory;
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(Options.CurrentOptions.StartingDirectory))
+                {
+                    if (Directory.Exists(Options.CurrentOptions.StartingDirectory))
+                    {
+                        WorkingDirectory = Options.CurrentOptions.StartingDirectory;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Custom working directory no longer exists!\nDefault directory will be set!", "MoonShell", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Options.CurrentOptions.StartingDirectory = string.Empty;
+                    }
+                }
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            RestoreWindowState();
             AddTab();
         }
 
@@ -245,7 +375,8 @@ namespace MoonShell
         private void button4_Click(object sender, EventArgs e)
         {
             ShowOptions();
-            
+            WorkingDirectory = Options.CurrentOptions.StartingDirectory;
+
             if (_currentTab != null)
             {
                 _currentTab.Focus();
@@ -254,6 +385,7 @@ namespace MoonShell
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            SaveWindowState();
             Options.SaveSettings();
         }
 
@@ -352,6 +484,16 @@ namespace MoonShell
             {
                 _currentTab.Focus();
             }
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            placesMenu.Show(button8, button8.Location);
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ExportLog();
         }
     }
 }

@@ -18,9 +18,11 @@ namespace MoonShell
         public Color ForegroundColor { get; set; }
         public Color ErrorColor { get; set; }
         public Font Font { get; set; }
-
-        //public int X { get; set; }
-        //public int Y { get; set; }
+        public List<string> Places { get; set; }
+        public string StartingDirectory { get; set; }
+        public Size WindowSize { get; set; }
+        public Point? WindowLocation { get; set; }
+        public FormWindowState WindowState { get; set; }
 
         //public ArrayList History { get; set; }
     }
@@ -33,9 +35,6 @@ namespace MoonShell
         readonly static string _settingsFile = Application.StartupPath + "\\MoonShell.json";
         internal static SettingsJson CurrentOptions = new SettingsJson();
         internal readonly static string ThemeFlag = "themeable";
-
-        // use this to determine if changes have been made
-        static SettingsJson _flag = new SettingsJson();
 
         internal static void ApplyTheme(Form f)
         {
@@ -97,25 +96,35 @@ namespace MoonShell
             }
         }
 
+        internal static void VerifyPlaces()
+        {
+            for (int i = 0; i < CurrentOptions.Places.Count; i++)
+            {
+                if (!Directory.Exists(CurrentOptions.Places[i]))
+                {
+                    CurrentOptions.Places.RemoveAt(i);
+                }
+            }
+
+            SaveSettings();
+        }
+
         internal static void SaveSettings()
         {
             if (File.Exists(_settingsFile))
             {
                 File.WriteAllText(_settingsFile, string.Empty);
 
-                if ((_flag.BackgroundColor != CurrentOptions.BackgroundColor) || (_flag.ForegroundColor != CurrentOptions.ForegroundColor) || (_flag.Font != CurrentOptions.Font) || _flag.Color != CurrentOptions.Color || CurrentOptions.ErrorColor != _flag.ErrorColor)
+                //CurrentOptions.History = ConsoleControl.History;
+
+                using (FileStream fs = File.Open(_settingsFile, FileMode.OpenOrCreate))
+                using (StreamWriter sw = new StreamWriter(fs))
+                using (JsonWriter jw = new JsonTextWriter(sw))
                 {
-                    //CurrentOptions.History = ConsoleControl.History;
+                    jw.Formatting = Formatting.Indented;
 
-                    using (FileStream fs = File.Open(_settingsFile, FileMode.OpenOrCreate))
-                    using (StreamWriter sw = new StreamWriter(fs))
-                    using (JsonWriter jw = new JsonTextWriter(sw))
-                    {
-                        jw.Formatting = Formatting.Indented;
-
-                        JsonSerializer serializer = new JsonSerializer();
-                        serializer.Serialize(jw, CurrentOptions);
-                    }
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Serialize(jw, CurrentOptions);
                 }
             }
         }
@@ -126,10 +135,15 @@ namespace MoonShell
             {
                 // default settings
                 CurrentOptions.Font = new Font("Consolas", 10.8F);
-                CurrentOptions.BackgroundColor = Color.Black;
+                CurrentOptions.BackgroundColor = Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
                 CurrentOptions.ForegroundColor = Color.Lime;
                 CurrentOptions.ErrorColor = Color.Tomato;
                 CurrentOptions.Color = Theme.Zerg;
+                CurrentOptions.Places = new List<string>();
+                CurrentOptions.StartingDirectory = string.Empty;
+                CurrentOptions.WindowState = FormWindowState.Normal;
+                CurrentOptions.WindowLocation = null;
+                CurrentOptions.WindowSize = new Size(1123, 689);
 
                 //if (CurrentOptions.History != null)
                 //{
@@ -150,17 +164,18 @@ namespace MoonShell
             {
                 CurrentOptions = JsonConvert.DeserializeObject<SettingsJson>(File.ReadAllText(_settingsFile));
 
+                if (CurrentOptions.Places == null) CurrentOptions.Places = new List<string>();
+
+                if (CurrentOptions.WindowSize.IsEmpty)
+                {
+                    CurrentOptions.WindowSize = new Size(1123, 689);
+                    SaveSettings();
+                }
+
                 //if (CurrentOptions.History != null)
                 //{
                 //    ConsoleControl.History = CurrentOptions.History;
                 //}
-
-                // initialize flag with default settings
-                _flag.Font = new Font("Consolas", 10.8F);
-                _flag.BackgroundColor = Color.Black;
-                _flag.ForegroundColor = Color.Lime;
-                _flag.ErrorColor = Color.Tomato;
-                _flag.Color = Theme.Zerg;
             }
         }
     }

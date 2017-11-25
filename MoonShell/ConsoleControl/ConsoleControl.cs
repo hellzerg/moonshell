@@ -34,6 +34,9 @@ namespace MoonShell
         // Stores the last used command.
         string _lastCommand = string.Empty;
 
+        // Helper for adding a place
+        bool _addPlace = false;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsoleControl"/> class.
         /// </summary>
@@ -79,6 +82,22 @@ namespace MoonShell
             richTextBoxConsole.KeyDown += richTextBoxConsole_KeyDown;
         }
 
+        private void AddPlace()
+        {
+            if (_addPlace)
+            {
+                string place = InternalRichTextBox.Lines.Last().Replace(">", string.Empty).Trim();
+
+                if (!string.IsNullOrEmpty(place))
+                {
+                    Options.CurrentOptions.Places.Add(place);
+                    _mainForm.LoadPlaces();
+
+                    _addPlace = false;
+                }
+            }
+        }
+
         /// <summary>
         /// Handles the OnProcessError event of the processInterace control.
         /// </summary>
@@ -105,6 +124,8 @@ namespace MoonShell
 
             //  Fire the output event.
             FireConsoleOutputEvent(args.Content);
+
+            AddPlace();
         }
 
         /// <summary>
@@ -158,6 +179,8 @@ namespace MoonShell
         /// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
         void richTextBoxConsole_KeyDown(object sender, KeyEventArgs e)
         {
+            _addPlace = false;
+
             //  Are we sending keyboard commands to the process?
             if (SendKeyboardCommandsToProcess && IsProcessRunning)
             {
@@ -208,9 +231,10 @@ namespace MoonShell
             {
                 //  Get the input.
                 string input = string.Empty;
+
                 try
                 {
-                    input = richTextBoxConsole.Text.Substring(inputStart, (richTextBoxConsole.SelectionStart) - inputStart);
+                    input = richTextBoxConsole.Text.Substring(inputStart, (richTextBoxConsole.SelectionStart) - inputStart).Trim();
                 }
                 catch
                 {
@@ -218,23 +242,14 @@ namespace MoonShell
                     return;
                 }
 
-                //if (!string.IsNullOrEmpty(input.Trim()))
-                //{
-                //    History.Add(input.Trim());
-                //}
-
                 // Custom command processing
 
-                if (input.Trim() == "ls")
-                {
-                    input = "dir";
-                }
-                if (input.Trim() == "exit" || input.Trim() == "quit")
-                {
-                    input = string.Empty;
-                    Application.Exit();
-                }
-                if (input.Trim() == "!!")
+                //if (!string.IsNullOrEmpty(input))
+                //{
+                //    History.Add(input);
+                //}
+
+                if (input == "!!")
                 {
                     if (!string.IsNullOrEmpty(_lastCommand))
                     {
@@ -245,45 +260,150 @@ namespace MoonShell
                         input = string.Empty;
                     }
                 }
-                if (input.Trim() == "clear" || input.Trim() == "cls")
+
+                if (input == "addplace")
+                {
+                    input = string.Empty;
+                    _addPlace = true;
+                }
+
+                if (input.StartsWith("removeplace "))
+                {
+                    int i = -1;
+                    int.TryParse(input.Replace("removeplace ", string.Empty), out i);
+
+                    input = string.Empty;
+
+                    if (i > 0 && Options.CurrentOptions.Places.Count > 0)
+                    {
+                        try
+                        {
+                            Options.CurrentOptions.Places.RemoveAt(i - 1);
+                            _mainForm.LoadPlaces();
+                        }
+                        catch { } 
+                    }
+                }
+
+                if (input == "verifyplaces")
+                {
+                    input = string.Empty;
+                    Options.VerifyPlaces();
+                    _mainForm.LoadPlaces();
+                }
+
+                if (input == "clearplaces")
+                {
+                    input = string.Empty;
+                    Options.CurrentOptions.Places.Clear();
+                    _mainForm.LoadPlaces();
+                }
+
+                if (input == "exportlog")
+                {
+                    input = string.Empty;
+                    _mainForm.ExportLog();
+                }
+
+                if (input == "ls")
+                {
+                    input = "dir";
+                }
+
+                if (input == "exit" || input == "quit")
+                {
+                    input = string.Empty;
+                    Application.Exit();
+                }
+
+                if (input == "clear" || input == "cls")
                 {
                     ClearOutput();
                     return;
                 }
-                if (input.Trim() == "add")
+
+                if (input == "add")
                 {
                     input = string.Empty;
                     _mainForm.AddTab();
                 }
-                if (input.Trim() == "remove")
+
+                if (input == "remove")
                 {
                     input = string.Empty;
                     _mainForm.RemoveTab();
                 }
-                if (input.Trim() == "new")
+
+                if (input == "new")
                 {
                     input = string.Empty;
                     _mainForm.NewWindow();
                 }
-                if (input.Trim() == "admin")
+
+                if (input == "admin")
                 {
                     input = string.Empty;
                     _mainForm.NewWindowAdmin();
                 }
-                if (input.Trim() == "options")
+
+                if (input == "options")
                 {
                     input = string.Empty;
                     _mainForm.ShowOptions();
                 }
-                if (input.Trim() == "themes")
+
+                if (input == "themes")
                 {
                     input = string.Empty;
                     _mainForm.ShowThemes();
                 }
-                if (input.Trim() == "help" || input.Trim() == "about")
+
+                if (input == "help" || input == "about")
                 {
                     input = string.Empty;
                     _mainForm.ShowAboutDialog();
+                }
+
+                if (input == "theme zerg")
+                {
+                    input = string.Empty;
+                    Options.CurrentOptions.Color = Theme.Zerg;
+                    Options.ApplyTheme(_mainForm);
+                }
+
+                if (input == "theme ocean")
+                {
+                    input = string.Empty;
+                    Options.CurrentOptions.Color = Theme.Ocean;
+                    Options.ApplyTheme(_mainForm);
+                }
+
+                if (input == "theme caramel")
+                {
+                    input = string.Empty;
+                    Options.CurrentOptions.Color = Theme.Caramel;
+                    Options.ApplyTheme(_mainForm);
+                }
+
+                if (input == "theme lime")
+                {
+                    input = string.Empty;
+                    Options.CurrentOptions.Color = Theme.Lime;
+                    Options.ApplyTheme(_mainForm);
+                }
+
+                if (input == "theme magma")
+                {
+                    input = string.Empty;
+                    Options.CurrentOptions.Color = Theme.Magma;
+                    Options.ApplyTheme(_mainForm);
+                }
+
+                if (input == "theme minimal")
+                {
+                    input = string.Empty;
+                    Options.CurrentOptions.Color = Theme.Minimal;
+                    Options.ApplyTheme(_mainForm);
                 }
 
                 //  Write the input (without echoing).
@@ -616,5 +736,5 @@ namespace MoonShell
     /// <summary>
     /// Used to allow us to find resources properly.
     /// </summary>
-    public class Resfinder {}
+    public class Resfinder { }
 }

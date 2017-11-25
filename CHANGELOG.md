@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9] - 2017-11-25
+- New: Places, quick access to your favorite directories
+- New: Export logs
+- New: change starting directory
+- Window state persistence added
+
 ## [1.8] - 2017-10-26
 - General improvements
 

@@ -28,15 +28,22 @@ namespace MoonShell
         {
             CheckForIllegalCrossThreadCalls = false;
 
-            textBox1.AppendText("Type 'exit' or 'quit' to close MoonShell\n");
-            textBox1.AppendText("Type 'clear' or 'cls' to clear the screen\n");
-            textBox1.AppendText("Type '!!' to execute the last command\n");
-            textBox1.AppendText("Type 'add' or 'remove' to add or remove tabs\n");
-            textBox1.AppendText("Type 'new' to launch a new instance\n");
-            textBox1.AppendText("Type 'admin' to launch a new privileged instance\n");
-            textBox1.AppendText("Type 'options' to show options\n");
-            textBox1.AppendText("Type 'themes' to change theme\n");
-            textBox1.AppendText("Type 'help' or 'about' to show available commands\n");
+            infoBox.AppendText("Type 'add' or 'remove' to add or remove tabs\n");
+            infoBox.AppendText("Press CTRL+T or CTRL+W to add or remove tabs\n");
+            infoBox.AppendText("Type 'clear' or 'cls' to clear current tab\n");
+            infoBox.AppendText("Type '!!' to execute the last command\n");
+            infoBox.AppendText("Type 'addplace' to bookmark current directory\n");
+            infoBox.AppendText("Type 'removeplace <ID>' to remove a specific place\n");
+            infoBox.AppendText("Type 'verifyplaces' to remove invalid places\n");
+            infoBox.AppendText("Type 'clearplaces' to remove all places\n");
+            infoBox.AppendText("Type 'exportlog' to export a log file\n");
+            infoBox.AppendText("Type 'options' to show options\n");
+            infoBox.AppendText("Type 'themes' to show available themes\n");
+            infoBox.AppendText("Type 'theme <theme>' to change theme\n");
+            infoBox.AppendText("Type 'help' or 'about' to show available commands\n");
+            infoBox.AppendText("Type 'new' to launch a new instance\n");
+            infoBox.AppendText("Type 'admin' to launch a new privileged instance\n");
+            infoBox.AppendText("Type 'exit' or 'quit' to close MoonShell");
 
             t1.Interval = 50;
             t2.Interval = 50;
