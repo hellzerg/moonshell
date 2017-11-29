@@ -13,6 +13,9 @@ Portable and multi-tabbed terminal for Windows
 * Window state persistence supported
 * Export logs
 
+## List of available custom commands: ##
+https://github.com/hellzerg/moonshell/wiki
+
 ## Downloads: ##
 https://github.com/hellzerg/moonshell/releases
 

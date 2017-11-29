@@ -93,6 +93,7 @@ namespace MoonShell
             _currentTab.ForeColor = Options.CurrentOptions.ForegroundColor;
             _currentTab.ErrorColor = Options.CurrentOptions.ErrorColor;
             _currentTab.Font = Options.CurrentOptions.Font;
+            
             _currentTab.InternalRichTextBox.ContextMenuStrip = helperMenu;
             _currentTab.InternalRichTextBox.AllowDrop = true;
             _currentTab.InternalRichTextBox.DragEnter += MainForm_DragEnter;
