@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0] - 2017-12-20
+- Added SSH support
+
 ## [1.9] - 2017-11-25
 - New: Places, quick access to your favorite directories
 - New: Export logs

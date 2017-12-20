@@ -143,7 +143,7 @@ namespace MoonShell
                 CurrentOptions.StartingDirectory = string.Empty;
                 CurrentOptions.WindowState = FormWindowState.Normal;
                 CurrentOptions.WindowLocation = null;
-                CurrentOptions.WindowSize = new Size(1123, 689);
+                CurrentOptions.WindowSize = new Size(1241, 689);
 
                 //if (CurrentOptions.History != null)
                 //{
@@ -168,7 +168,7 @@ namespace MoonShell
 
                 if (CurrentOptions.WindowSize.IsEmpty)
                 {
-                    CurrentOptions.WindowSize = new Size(1123, 689);
+                    CurrentOptions.WindowSize = new Size(1241, 689);
                     SaveSettings();
                 }
 

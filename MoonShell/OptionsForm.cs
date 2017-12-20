@@ -54,7 +54,7 @@ namespace MoonShell
         private void ResetToDefault()
         {
             _previewFont = new Font("Consolas", 11F);
-            _previewBackColor = Color.Black;
+            _previewBackColor = Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             _previewForeColor = Color.Lime;
 
             lblFont.Text = _fontConverter.ConvertToInvariantString(_previewFont);

@@ -496,5 +496,17 @@ namespace MoonShell
         {
             ExportLog();
         }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            ConnectForm f = new ConnectForm();
+            f.ShowDialog();
+
+            if (f.ConnectedClient != null)
+            {
+                SshForm f2 = new SshForm(f.ConnectedClient);
+                f2.Show();
+            }
+        }
     }
 }

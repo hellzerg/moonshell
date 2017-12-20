@@ -52,8 +52,9 @@
             this.toolStripMenuItem15 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem16 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem17 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem18 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem18 = new System.Windows.Forms.ToolStripMenuItem();
+            this.button10 = new System.Windows.Forms.Button();
             this.topPanel.SuspendLayout();
             this.botPanel.SuspendLayout();
             this.helperMenu.SuspendLayout();
@@ -62,6 +63,7 @@
             // topPanel
             // 
             this.topPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.topPanel.Controls.Add(this.button10);
             this.topPanel.Controls.Add(this.button8);
             this.topPanel.Controls.Add(this.button9);
             this.topPanel.Controls.Add(this.button7);
@@ -75,7 +77,7 @@
             this.topPanel.Location = new System.Drawing.Point(0, 0);
             this.topPanel.Margin = new System.Windows.Forms.Padding(2);
             this.topPanel.Name = "topPanel";
-            this.topPanel.Size = new System.Drawing.Size(1105, 40);
+            this.topPanel.Size = new System.Drawing.Size(1223, 40);
             this.topPanel.TabIndex = 5;
             // 
             // button8
@@ -112,7 +114,7 @@
             this.button9.FlatAppearance.MouseDownBackColor = System.Drawing.Color.RoyalBlue;
             this.button9.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
             this.button9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button9.Location = new System.Drawing.Point(860, 2);
+            this.button9.Location = new System.Drawing.Point(978, 2);
             this.button9.Margin = new System.Windows.Forms.Padding(2);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(118, 32);
@@ -128,7 +130,7 @@
             this.button7.FlatAppearance.MouseDownBackColor = System.Drawing.Color.RoyalBlue;
             this.button7.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
             this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button7.Location = new System.Drawing.Point(982, 2);
+            this.button7.Location = new System.Drawing.Point(1100, 2);
             this.button7.Margin = new System.Windows.Forms.Padding(2);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(118, 32);
@@ -144,7 +146,7 @@
             this.button6.FlatAppearance.MouseDownBackColor = System.Drawing.Color.RoyalBlue;
             this.button6.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
             this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button6.Location = new System.Drawing.Point(738, 2);
+            this.button6.Location = new System.Drawing.Point(856, 2);
             this.button6.Margin = new System.Windows.Forms.Padding(2);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(118, 32);
@@ -160,7 +162,7 @@
             this.button5.FlatAppearance.MouseDownBackColor = System.Drawing.Color.RoyalBlue;
             this.button5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button5.Location = new System.Drawing.Point(615, 2);
+            this.button5.Location = new System.Drawing.Point(734, 2);
             this.button5.Margin = new System.Windows.Forms.Padding(2);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(118, 32);
@@ -176,7 +178,7 @@
             this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.RoyalBlue;
             this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Location = new System.Drawing.Point(492, 2);
+            this.button4.Location = new System.Drawing.Point(612, 2);
             this.button4.Margin = new System.Windows.Forms.Padding(2);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(118, 32);
@@ -192,7 +194,7 @@
             this.button3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.RoyalBlue;
             this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Location = new System.Drawing.Point(370, 2);
+            this.button3.Location = new System.Drawing.Point(490, 2);
             this.button3.Margin = new System.Windows.Forms.Padding(2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(118, 32);
@@ -208,7 +210,7 @@
             this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.RoyalBlue;
             this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(248, 2);
+            this.button2.Location = new System.Drawing.Point(368, 2);
             this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(118, 32);
@@ -224,7 +226,7 @@
             this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.RoyalBlue;
             this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(125, 2);
+            this.button1.Location = new System.Drawing.Point(246, 2);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(118, 32);
@@ -244,7 +246,7 @@
             this.botPanel.Location = new System.Drawing.Point(0, 40);
             this.botPanel.Margin = new System.Windows.Forms.Padding(2);
             this.botPanel.Name = "botPanel";
-            this.botPanel.Size = new System.Drawing.Size(1105, 602);
+            this.botPanel.Size = new System.Drawing.Size(1223, 602);
             this.botPanel.TabIndex = 6;
             // 
             // tabConsoles
@@ -255,7 +257,7 @@
             this.tabConsoles.Margin = new System.Windows.Forms.Padding(2);
             this.tabConsoles.Name = "tabConsoles";
             this.tabConsoles.SelectedIndex = 0;
-            this.tabConsoles.Size = new System.Drawing.Size(1103, 600);
+            this.tabConsoles.Size = new System.Drawing.Size(1221, 600);
             this.tabConsoles.TabIndex = 0;
             this.tabConsoles.SelectedIndexChanged += new System.EventHandler(this.Tabs_SelectedIndexChanged);
             // 
@@ -352,15 +354,6 @@
             this.toolStripMenuItem17.Text = "New admin";
             this.toolStripMenuItem17.Click += new System.EventHandler(this.toolStripMenuItem17_Click);
             // 
-            // toolStripMenuItem18
-            // 
-            this.toolStripMenuItem18.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripMenuItem18.ForeColor = System.Drawing.Color.White;
-            this.toolStripMenuItem18.Name = "toolStripMenuItem18";
-            this.toolStripMenuItem18.Size = new System.Drawing.Size(172, 32);
-            this.toolStripMenuItem18.Text = "Exit";
-            this.toolStripMenuItem18.Click += new System.EventHandler(this.toolStripMenuItem18_Click);
-            // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -370,13 +363,38 @@
             this.toolStripMenuItem1.Text = "Export log";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
+            // toolStripMenuItem18
+            // 
+            this.toolStripMenuItem18.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripMenuItem18.ForeColor = System.Drawing.Color.White;
+            this.toolStripMenuItem18.Name = "toolStripMenuItem18";
+            this.toolStripMenuItem18.Size = new System.Drawing.Size(172, 32);
+            this.toolStripMenuItem18.Text = "Exit";
+            this.toolStripMenuItem18.Click += new System.EventHandler(this.toolStripMenuItem18_Click);
+            // 
+            // button10
+            // 
+            this.button10.BackColor = System.Drawing.Color.DodgerBlue;
+            this.button10.FlatAppearance.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.button10.FlatAppearance.MouseDownBackColor = System.Drawing.Color.RoyalBlue;
+            this.button10.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
+            this.button10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button10.Location = new System.Drawing.Point(124, 2);
+            this.button10.Margin = new System.Windows.Forms.Padding(2);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(118, 32);
+            this.button10.TabIndex = 13;
+            this.button10.Text = "SSH";
+            this.button10.UseVisualStyleBackColor = false;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(1105, 642);
+            this.ClientSize = new System.Drawing.Size(1223, 642);
             this.Controls.Add(this.botPanel);
             this.Controls.Add(this.topPanel);
             this.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -424,6 +442,7 @@
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.ContextMenuStrip placesMenu;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.Button button10;
     }
 }
 

@@ -7,6 +7,7 @@ Portable and multi-tabbed terminal for Windows
 * Customizable font, text and background color
 * Each tab is running on its own process, independently
 * Drag n' drop file/folder support
+* SSH support
 * Keyboard shortcuts for adding/removing tabs
 * Quick access to your favorite directories
 * Customizable starting directory
@@ -28,5 +29,5 @@ https://github.com/hellzerg/moonshell/releases
 
 ## Details: ##
 
-* Latest version: 1.9
-* Released: November 25, 2017
+* Latest version: 2.0
+* Released: December 20, 2017
