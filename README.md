@@ -29,5 +29,5 @@ https://github.com/hellzerg/moonshell/releases
 
 ## Details: ##
 
-* Latest version: 2.0
-* Released: December 20, 2017
+* Latest version: 2.1
+* Released: December 22, 2017

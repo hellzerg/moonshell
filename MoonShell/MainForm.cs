@@ -95,10 +95,11 @@ namespace MoonShell
             _currentTab.Font = Options.CurrentOptions.Font;
             
             _currentTab.InternalRichTextBox.ContextMenuStrip = helperMenu;
-            _currentTab.InternalRichTextBox.AllowDrop = true;
             _currentTab.InternalRichTextBox.DragEnter += MainForm_DragEnter;
             _currentTab.InternalRichTextBox.DragDrop += MainForm_DragDrop;
-            
+
+            _currentTab.InternalRichTextBox.AllowDrop = true;
+
             _tabCounter++;
             TabPage tab = new TabPage();
             tab.Text = "Console " + _tabCounter;
@@ -210,7 +211,7 @@ namespace MoonShell
             {
                 try
                 {
-                    _currentTab.InternalRichTextBox.AppendText(Clipboard.GetText());
+                    _currentTab.InternalRichTextBox.Paste(DataFormats.GetFormat("Text"));
                 }
                 catch { }
             }
@@ -499,7 +500,7 @@ namespace MoonShell
 
         private void button10_Click(object sender, EventArgs e)
         {
-            ConnectForm f = new ConnectForm();
+            ConnectForm f = new ConnectForm(Options.CurrentOptions.SSHHost, Options.CurrentOptions.SSHUsername, Options.CurrentOptions.SSHPort);
             f.ShowDialog();
 
             if (f.ConnectedClient != null)

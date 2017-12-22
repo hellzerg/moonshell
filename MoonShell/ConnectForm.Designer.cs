@@ -74,7 +74,7 @@
             this.txtUsername.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtUsername.ForeColor = System.Drawing.Color.White;
             this.txtUsername.Location = new System.Drawing.Point(14, 181);
-            this.txtUsername.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtUsername.Margin = new System.Windows.Forms.Padding(4);
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(428, 34);
             this.txtUsername.TabIndex = 2;
@@ -86,7 +86,7 @@
             this.txtPassword.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPassword.ForeColor = System.Drawing.Color.White;
             this.txtPassword.Location = new System.Drawing.Point(14, 251);
-            this.txtPassword.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPassword.Margin = new System.Windows.Forms.Padding(4);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(428, 34);
             this.txtPassword.TabIndex = 3;
@@ -149,7 +149,7 @@
             this.txtHost.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtHost.ForeColor = System.Drawing.Color.White;
             this.txtHost.Location = new System.Drawing.Point(13, 41);
-            this.txtHost.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtHost.Margin = new System.Windows.Forms.Padding(4);
             this.txtHost.Name = "txtHost";
             this.txtHost.Size = new System.Drawing.Size(428, 34);
             this.txtHost.TabIndex = 0;
@@ -190,7 +190,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(75, 20);
             this.label5.TabIndex = 79;
-            this.label5.Tag = "themeable";
+            this.label5.Tag = "";
             this.label5.Text = "(optional)";
             // 
             // ConnectForm
@@ -215,7 +215,7 @@
             this.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ConnectForm";
@@ -223,6 +223,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Connect to ";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ConnectForm_FormClosing);
             this.Load += new System.EventHandler(this.ConnectForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

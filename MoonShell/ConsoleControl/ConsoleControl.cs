@@ -186,7 +186,7 @@ namespace MoonShell
             {
                 //  Get key mappings for this key event?
                 var mappings = from k in keyMappings
-                               where 
+                               where
                                (k.KeyCode == e.KeyCode &&
                                k.IsAltPressed == e.Alt &&
                                k.IsControlPressed == e.Control &&
@@ -194,12 +194,12 @@ namespace MoonShell
                                select k;
 
                 //  Go through each mapping, send the message.
-                foreach (var mapping in mappings)
-                {
-                    //SendKeysEx.SendKeys(CurrentProcessHwnd, mapping.SendKeysMapping);
-                    //inputWriter.WriteLine(mapping.StreamMapping);
-                    //WriteInput("\x3", ForeColor, false);
-                }
+                //foreach (var mapping in mappings)
+                //{
+                //    SendKeysEx.SendKeys(CurrentProcessHwnd, mapping.SendKeysMapping);
+                //    inputWriter.WriteLine(mapping.StreamMapping);
+                //    WriteInput("\x3", ForeColor, false);
+                //}
 
                 //  If we handled a mapping, we're done here.
                 if (mappings.Any())
@@ -209,7 +209,7 @@ namespace MoonShell
                 }
             }
 
-            //  If we're at the input point and it's backspace, bail.
+                //  If we're at the input point and it's backspace, bail.
             if ((richTextBoxConsole.SelectionStart <= inputStart) && e.KeyCode == Keys.Back) e.SuppressKeyPress = true;
 
             //  Are we in the read-only zone?
@@ -224,6 +224,13 @@ namespace MoonShell
                 {
                     e.SuppressKeyPress = true;
                 }
+            }
+
+            // Paste only text (without formatting) when CTRL+V
+            if (e.Control && e.KeyCode == Keys.V)
+            {
+                ((RichTextBox)sender).Paste(DataFormats.GetFormat("Text"));
+                e.Handled = true;
             }
 
             //  Is it the return key?
@@ -253,7 +260,7 @@ namespace MoonShell
                 {
                     input = string.Empty;
 
-                    ConnectForm f = new ConnectForm();
+                    ConnectForm f = new ConnectForm(Options.CurrentOptions.SSHHost, Options.CurrentOptions.SSHUsername, Options.CurrentOptions.SSHPort);
                     f.ShowDialog();
 
                     if (f.ConnectedClient != null)

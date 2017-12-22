@@ -15,7 +15,7 @@ namespace MoonShell
     {
         internal SshClient ConnectedClient;
 
-        public ConnectForm(string host = null, string username = null)
+        public ConnectForm(string host = null, string username = null, string port = null)
         {
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
@@ -29,6 +29,12 @@ namespace MoonShell
             if (!string.IsNullOrEmpty(host))
             {
                 txtHost.Text = host;
+                txtPort.Select();
+            }
+
+            if (!string.IsNullOrEmpty(port))
+            {
+                txtPort.Text = port;
                 txtUsername.Select();
             }
 
@@ -37,7 +43,6 @@ namespace MoonShell
                 txtUsername.Text = username;
                 txtPassword.Select();
             }
-
         }
 
         private void ConnectForm_Load(object sender, EventArgs e)
@@ -95,6 +100,13 @@ namespace MoonShell
         private void txtPort_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+        }
+
+        private void ConnectForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Options.CurrentOptions.SSHHost = txtHost.Text;
+            Options.CurrentOptions.SSHPort = txtPort.Text;
+            Options.CurrentOptions.SSHUsername = txtUsername.Text;
         }
     }
 }

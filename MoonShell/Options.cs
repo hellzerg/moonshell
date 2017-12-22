@@ -23,6 +23,9 @@ namespace MoonShell
         public Size WindowSize { get; set; }
         public Point? WindowLocation { get; set; }
         public FormWindowState WindowState { get; set; }
+        public string SSHHost { get; set; }
+        public string SSHUsername { get; set; }
+        public string SSHPort { get; set; }
 
         //public ArrayList History { get; set; }
     }
@@ -144,6 +147,9 @@ namespace MoonShell
                 CurrentOptions.WindowState = FormWindowState.Normal;
                 CurrentOptions.WindowLocation = null;
                 CurrentOptions.WindowSize = new Size(1241, 689);
+                CurrentOptions.SSHHost = string.Empty;
+                CurrentOptions.SSHPort = string.Empty;
+                CurrentOptions.SSHUsername = string.Empty;
 
                 //if (CurrentOptions.History != null)
                 //{
@@ -171,6 +177,10 @@ namespace MoonShell
                     CurrentOptions.WindowSize = new Size(1241, 689);
                     SaveSettings();
                 }
+
+                if (CurrentOptions.SSHHost == null) CurrentOptions.SSHHost = string.Empty;
+                if (CurrentOptions.SSHPort == null) CurrentOptions.SSHPort = string.Empty;
+                if (CurrentOptions.SSHUsername == null) CurrentOptions.SSHUsername = string.Empty;
 
                 //if (CurrentOptions.History != null)
                 //{
