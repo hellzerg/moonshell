@@ -13,8 +13,6 @@ namespace MoonShell
 {
     public partial class ConnectForm : Form
     {
-        internal SshClient ConnectedClient;
-
         public ConnectForm(string host = null, string username = null, string port = null)
         {
             InitializeComponent();
@@ -72,7 +70,8 @@ namespace MoonShell
 
                     if (client.IsConnected)
                     {
-                        ConnectedClient = client;
+                        SshForm f = new SshForm(client);
+                        f.Show();
                         this.Close();
                     }
                 }

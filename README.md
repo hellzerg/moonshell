@@ -20,6 +20,9 @@ https://github.com/hellzerg/moonshell/wiki
 ## Downloads: ##
 https://github.com/hellzerg/moonshell/releases
 
+## Screenshots: ##
+https://github.com/hellzerg/moonshell/blob/master/IMAGES.md
+
 ## Compatibility: ##
 
 * .NET Framework 4.5.2

@@ -69,15 +69,16 @@ namespace MoonShell
                         return;
                     }
 
+                    //if (txtInput.Text == "exit")
+                    //{
+                    //    this.Close();
+                    //}
+
                     if (_shellStream != null)
                     {
                         _shellStream.WriteLine(txtInput.Text);
                         _shellStream.Flush();
                     }
-
-                    if (txtInput.Text == "exit") txtInput.Enabled = false;
-
-                    txtInput.Clear();
                 }
             }
         }

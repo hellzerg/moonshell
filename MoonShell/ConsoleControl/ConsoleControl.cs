@@ -262,12 +262,6 @@ namespace MoonShell
 
                     ConnectForm f = new ConnectForm(Options.CurrentOptions.SSHHost, Options.CurrentOptions.SSHUsername, Options.CurrentOptions.SSHPort);
                     f.ShowDialog();
-
-                    if (f.ConnectedClient != null)
-                    {
-                        SshForm f2 = new SshForm(f.ConnectedClient);
-                        f2.Show();
-                    }
                 }
 
                 if (input.StartsWith("ssh "))
@@ -279,14 +273,8 @@ namespace MoonShell
                     {
                         if (!string.IsNullOrEmpty(tmp2[0]) && !string.IsNullOrEmpty(tmp2[1]))
                         {
-                            ConnectForm f = new ConnectForm(tmp2[1], tmp2[0]); ;
+                            ConnectForm f = new ConnectForm(tmp2[1], tmp2[0]);
                             f.ShowDialog();
-
-                            if (f.ConnectedClient != null)
-                            {
-                                SshForm f2 = new SshForm(f.ConnectedClient);
-                                f2.Show();
-                            }
                         }
                     }
                     catch { }

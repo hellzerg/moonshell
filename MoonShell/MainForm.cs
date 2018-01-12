@@ -503,11 +503,7 @@ namespace MoonShell
             ConnectForm f = new ConnectForm(Options.CurrentOptions.SSHHost, Options.CurrentOptions.SSHUsername, Options.CurrentOptions.SSHPort);
             f.ShowDialog();
 
-            if (f.ConnectedClient != null)
-            {
-                SshForm f2 = new SshForm(f.ConnectedClient);
-                f2.Show();
-            }
+            //
         }
     }
 }
