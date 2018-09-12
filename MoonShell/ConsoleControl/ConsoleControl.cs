@@ -256,30 +256,6 @@ namespace MoonShell
                 //    History.Add(input);
                 //}
 
-                if (input == "ssh connect")
-                {
-                    input = string.Empty;
-
-                    ConnectForm f = new ConnectForm(Options.CurrentOptions.SSHHost, Options.CurrentOptions.SSHUsername, Options.CurrentOptions.SSHPort);
-                    f.ShowDialog();
-                }
-
-                if (input.StartsWith("ssh "))
-                {
-                    string[] tmp2 = input.Replace("ssh ", string.Empty).Split('@');
-                    input = string.Empty;
-
-                    try
-                    {
-                        if (!string.IsNullOrEmpty(tmp2[0]) && !string.IsNullOrEmpty(tmp2[1]))
-                        {
-                            ConnectForm f = new ConnectForm(tmp2[1], tmp2[0]);
-                            f.ShowDialog();
-                        }
-                    }
-                    catch { }
-                }
-
                 if (input == "!!")
                 {
                     if (!string.IsNullOrEmpty(_lastCommand))

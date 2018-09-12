@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 
 namespace MoonShell
 {
@@ -23,11 +24,65 @@ namespace MoonShell
 
         ConsoleControl _currentTab;
 
+        readonly string _latestVersionLink = "https://raw.githubusercontent.com/hellzerg/moonshell/master/version.txt";
+        readonly string _releasesLink = "https://github.com/hellzerg/moonshell/releases";
+        readonly string _changelogLink = "https://github.com/hellzerg/moonshell/blob/master/CHANGELOG.md";
+
+        readonly string _noNewVersionMessage = "You already have the latest version!";
+        readonly string _betaVersionMessage = "You are using an experimental version!";
+
+        private string NewVersionMessage(string latest)
+        {
+            return string.Format("There is a new version available!\n\nLatest version: {0}\nCurrent version: {1}\n\nDo you want to download it now?", latest, Program.GetCurrentVersionTostring());
+        }
+
+
         public static bool IsAdmin
         {
             get
             {
                 return WindowsIdentity.GetCurrent().Owner.IsWellKnown(WellKnownSidType.BuiltinAdministratorsSid);
+            }
+        }
+
+        private void CheckForUpdate()
+        {
+            WebClient client = new WebClient
+            {
+                Encoding = Encoding.UTF8
+            };
+
+            string latestVersion = string.Empty;
+            try
+            {
+                latestVersion = client.DownloadString(_latestVersionLink);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            if (!string.IsNullOrEmpty(latestVersion))
+            {
+                if (float.Parse(latestVersion) > Program.GetCurrentVersion())
+                {
+                    if (MessageBox.Show(NewVersionMessage(latestVersion), "Update available", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            Process.Start(_releasesLink);
+                        }
+                        catch { }
+                    }
+                }
+                else if (float.Parse(latestVersion) == Program.GetCurrentVersion())
+                {
+                    MessageBox.Show(_noNewVersionMessage, "No update available", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show(_betaVersionMessage, "No update available", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
         }
 
@@ -294,12 +349,12 @@ namespace MoonShell
             if (IsAdmin)
             {
                 WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.System);
-                this.Text = "Administrator: MoonShell " + Program.GetCurrentVersion();
+                this.Text = "Administrator: MoonShell " + Program.GetCurrentVersionTostring();
             }
             else
             {
                 WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                this.Text = "MoonShell " + Program.GetCurrentVersion();
+                this.Text = "MoonShell " + Program.GetCurrentVersionTostring();
             }
 
             if (!string.IsNullOrEmpty(customDirectory))
@@ -500,10 +555,7 @@ namespace MoonShell
 
         private void button10_Click(object sender, EventArgs e)
         {
-            ConnectForm f = new ConnectForm(Options.CurrentOptions.SSHHost, Options.CurrentOptions.SSHUsername, Options.CurrentOptions.SSHPort);
-            f.ShowDialog();
-
-            //
+            CheckForUpdate();
         }
     }
 }

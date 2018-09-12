@@ -15,13 +15,18 @@ namespace MoonShell
 
         // Enter current version here
         internal readonly static float Major = 2;
-        internal readonly static float Minor = 1;
+        internal readonly static float Minor = 2;
 
         /* END OF VERSION PROPERTIES */
 
-        internal static string GetCurrentVersion()
+        internal static string GetCurrentVersionTostring()
         {
             return Major.ToString() + "." + Minor.ToString();
+        }
+
+        internal static float GetCurrentVersion()
+        {
+            return float.Parse(GetCurrentVersionTostring());
         }
 
         [STAThread]
@@ -32,9 +37,6 @@ namespace MoonShell
 
             string resource = "MoonShell.Newtonsoft.Json.dll";
             EmbeddedAssembly.Load(resource, resource.Replace("MoonShell.", string.Empty));
-
-            string resource2 = "MoonShell.Renci.SshNet.dll";
-            EmbeddedAssembly.Load(resource2, resource2.Replace("MoonShell.", string.Empty));
 
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 

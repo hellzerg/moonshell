@@ -114,7 +114,7 @@
             this.button9.FlatAppearance.MouseDownBackColor = System.Drawing.Color.RoyalBlue;
             this.button9.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
             this.button9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button9.Location = new System.Drawing.Point(978, 2);
+            this.button9.Location = new System.Drawing.Point(856, 2);
             this.button9.Margin = new System.Windows.Forms.Padding(2);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(118, 32);
@@ -146,7 +146,7 @@
             this.button6.FlatAppearance.MouseDownBackColor = System.Drawing.Color.RoyalBlue;
             this.button6.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
             this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button6.Location = new System.Drawing.Point(856, 2);
+            this.button6.Location = new System.Drawing.Point(734, 2);
             this.button6.Margin = new System.Windows.Forms.Padding(2);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(118, 32);
@@ -162,7 +162,7 @@
             this.button5.FlatAppearance.MouseDownBackColor = System.Drawing.Color.RoyalBlue;
             this.button5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button5.Location = new System.Drawing.Point(734, 2);
+            this.button5.Location = new System.Drawing.Point(612, 2);
             this.button5.Margin = new System.Windows.Forms.Padding(2);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(118, 32);
@@ -178,7 +178,7 @@
             this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.RoyalBlue;
             this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Location = new System.Drawing.Point(612, 2);
+            this.button4.Location = new System.Drawing.Point(490, 2);
             this.button4.Margin = new System.Windows.Forms.Padding(2);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(118, 32);
@@ -194,7 +194,7 @@
             this.button3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.RoyalBlue;
             this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Location = new System.Drawing.Point(490, 2);
+            this.button3.Location = new System.Drawing.Point(368, 2);
             this.button3.Margin = new System.Windows.Forms.Padding(2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(118, 32);
@@ -210,7 +210,7 @@
             this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.RoyalBlue;
             this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(368, 2);
+            this.button2.Location = new System.Drawing.Point(246, 2);
             this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(118, 32);
@@ -226,7 +226,7 @@
             this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.RoyalBlue;
             this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(246, 2);
+            this.button1.Location = new System.Drawing.Point(124, 2);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(118, 32);
@@ -379,12 +379,12 @@
             this.button10.FlatAppearance.MouseDownBackColor = System.Drawing.Color.RoyalBlue;
             this.button10.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
             this.button10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button10.Location = new System.Drawing.Point(124, 2);
+            this.button10.Location = new System.Drawing.Point(978, 2);
             this.button10.Margin = new System.Windows.Forms.Padding(2);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(118, 32);
             this.button10.TabIndex = 13;
-            this.button10.Text = "SSH";
+            this.button10.Text = "Update";
             this.button10.UseVisualStyleBackColor = false;
             this.button10.Click += new System.EventHandler(this.button10_Click);
             // 

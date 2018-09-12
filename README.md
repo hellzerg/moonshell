@@ -7,7 +7,6 @@ Portable and multi-tabbed terminal for Windows
 * Customizable font, text and background color
 * Each tab is running on its own process, independently
 * Drag n' drop file/folder support
-* SSH support
 * Keyboard shortcuts for adding/removing tabs
 * Quick access to your favorite directories
 * Customizable starting directory
@@ -32,5 +31,5 @@ https://github.com/hellzerg/moonshell/blob/master/IMAGES.md
 
 ## Details: ##
 
-* Latest version: 2.1
-* Released: December 22, 2017
+* Latest version: 2.2
+* Released: September 12, 2018

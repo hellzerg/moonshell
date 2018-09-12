@@ -32,8 +32,6 @@ namespace MoonShell
             infoBox.AppendText("Press CTRL+T or CTRL+W to add or remove tabs\n");
             infoBox.AppendText("Type 'clear' or 'cls' to clear current tab\n");
             infoBox.AppendText("Type '!!' to execute the last command\n");
-            infoBox.AppendText("Type 'ssh connect' to configure your connection\n");
-            infoBox.AppendText("Type 'ssh <username>@<host>' also works\n");
             infoBox.AppendText("Type 'addplace' to bookmark current directory\n");
             infoBox.AppendText("Type 'removeplace <ID>' to remove a specific place\n");
             infoBox.AppendText("Type 'verifyplaces' to remove invalid places\n");

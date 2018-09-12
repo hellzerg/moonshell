@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2] - 2018-09-12
+- Removed: SSH support, because of too many bugs
+
 ## [2.1] - 2017-12-22
 - Save SSH configuration upon exiting (except password)
 - Paste only text, without formatting fixed
