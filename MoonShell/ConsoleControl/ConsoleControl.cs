@@ -9,19 +9,10 @@ using System.Threading;
 
 namespace MoonShell
 {
-    /// <summary>
-    /// The console event handler is used for console events.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="args">The <see cref="ConsoleEventArgs"/> instance containing the event data.</param>
     public delegate void ConsoleEventHandler(object sender, ConsoleEventArgs args);
 
-    /// <summary>
-    /// The Console Control allows you to embed a basic console in your application.
-    /// </summary>
     public partial class ConsoleControl : UserControl
     {
-        // The Main form to handle custom command processing.
         MainForm _mainForm;
 
         // Stores the current line.
@@ -37,48 +28,33 @@ namespace MoonShell
         // Helper for adding a place
         bool _addPlace = false;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConsoleControl"/> class.
-        /// </summary>
         public ConsoleControl(MainForm mainForm)
         {
-            //  Initialise the component.
             InitializeComponent();
 
-            // Set Main form.
             _mainForm = mainForm;
 
-            //  Show diagnostics disabled by default.
             ShowDiagnostics = false;
-
-            // Fore color is Lime by default.
+            
             ForeColor = Color.Lime;
-
-            // Back color is Black by default.
+            
             BackColor = Color.Black;
-
-            // Error color is Tomato by default.
+            
             ErrorColor = Color.Tomato;
-
-            // Diagnostics color is Yellow by default.
+            
             DiagnosticsColor = Color.Yellow;
-
-            //  Input enabled by default.
+            
             IsInputEnabled = true;
-
-            //  Disable special commands by default.
+            
             SendKeyboardCommandsToProcess = false;
-
-            //  Initialise the keymappings.
+            
             InitializeKeyMappings();
-
-            //  Handle process events.
+            
             processInterface.OnProcessOutput += processInterace_OnProcessOutput;
             processInterface.OnProcessError += processInterace_OnProcessError;
             processInterface.OnProcessInput += processInterace_OnProcessInput;
             processInterface.OnProcessExit += processInterace_OnProcessExit;
 
-            //  Wait for key down messages on the rich text box.
             richTextBoxConsole.KeyDown += richTextBoxConsole_KeyDown;
         }
 
@@ -98,54 +74,28 @@ namespace MoonShell
             }
         }
 
-        /// <summary>
-        /// Handles the OnProcessError event of the processInterace control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="args">The <see cref="ProcessEventArgs"/> instance containing the event data.</param>
         void processInterace_OnProcessError(object sender, ProcessEventArgs args)
         {
-            //  Write the output, in red
             WriteOutput(args.Content, ErrorColor);
-
-            //  Fire the output event.
+            
             FireConsoleOutputEvent(args.Content);
         }
-
-        /// <summary>
-        /// Handles the OnProcessOutput event of the processInterace control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="args">The <see cref="ProcessEventArgs"/> instance containing the event data.</param>
+        
         void processInterace_OnProcessOutput(object sender, ProcessEventArgs args)
         {
-            //  Write the output, in white
             WriteOutput(args.Content, ForeColor);
-
-            //  Fire the output event.
             FireConsoleOutputEvent(args.Content);
 
             AddPlace();
         }
 
-        /// <summary>
-        /// Handles the OnProcessInput event of the processInterace control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="args">The <see cref="ProcessEventArgs"/> instance containing the event data.</param>
         void processInterace_OnProcessInput(object sender, ProcessEventArgs args)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Handles the OnProcessExit event of the processInterace control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="args">The <see cref="ProcessEventArgs"/> instance containing the event data.</param>
         void processInterace_OnProcessExit(object sender, ProcessEventArgs args)
         {
-            //  Are we showing diagnostics?
             if (ShowDiagnostics)
             {
                 WriteOutput(Environment.NewLine + processInterface.ProcessFileName + " exited.", DiagnosticsColor);
@@ -153,16 +103,13 @@ namespace MoonShell
             
             if (!this.IsHandleCreated)
                 return;
-            //  Read only again.
+          
             Invoke((Action)(() =>
             {
                 richTextBoxConsole.ReadOnly = true;
             }));
         }
 
-        /// <summary>
-        /// Initialises the key mappings.
-        /// </summary>
         private void InitializeKeyMappings()
         {
             //  Map 'tab'.
@@ -172,19 +119,12 @@ namespace MoonShell
             keyMappings.Add(new KeyMapping(true, false, false, Keys.C, "^(c)", "\x03\r\n"));
         }
 
-        /// <summary>
-        /// Handles the KeyDown event of the richTextBoxConsole control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
         void richTextBoxConsole_KeyDown(object sender, KeyEventArgs e)
         {
             _addPlace = false;
 
-            //  Are we sending keyboard commands to the process?
             if (SendKeyboardCommandsToProcess && IsProcessRunning)
             {
-                //  Get key mappings for this key event?
                 var mappings = from k in keyMappings
                                where
                                (k.KeyCode == e.KeyCode &&
@@ -193,7 +133,6 @@ namespace MoonShell
                                k.IsShiftPressed == e.Shift)
                                select k;
 
-                //  Go through each mapping, send the message.
                 //foreach (var mapping in mappings)
                 //{
                 //    SendKeysEx.SendKeys(CurrentProcessHwnd, mapping.SendKeysMapping);
@@ -201,7 +140,6 @@ namespace MoonShell
                 //    WriteInput("\x3", ForeColor, false);
                 //}
 
-                //  If we handled a mapping, we're done here.
                 if (mappings.Any())
                 {
                     e.SuppressKeyPress = true;
@@ -209,10 +147,8 @@ namespace MoonShell
                 }
             }
 
-                //  If we're at the input point and it's backspace, bail.
             if ((richTextBoxConsole.SelectionStart <= inputStart) && e.KeyCode == Keys.Back) e.SuppressKeyPress = true;
 
-            //  Are we in the read-only zone?
             if (richTextBoxConsole.SelectionStart < inputStart)
             {
                 //  Allow arrows and Ctrl-C.
@@ -226,17 +162,14 @@ namespace MoonShell
                 }
             }
 
-            // Paste only text (without formatting) when CTRL+V
             if (e.Control && e.KeyCode == Keys.V)
             {
                 ((RichTextBox)sender).Paste(DataFormats.GetFormat("Text"));
                 e.Handled = true;
             }
 
-            //  Is it the return key?
             if (e.KeyCode == Keys.Return)
             {
-                //  Get the input.
                 string input = string.Empty;
 
                 try
@@ -413,18 +346,12 @@ namespace MoonShell
                     Options.ApplyTheme(_mainForm);
                 }
 
-                //  Write the input (without echoing).
                 WriteInput(input, ForeColor, false);
 
                 if (input != "!!") _lastCommand = input;
             }
         }
 
-        /// <summary>
-        /// Writes the output to the console control.
-        /// </summary>
-        /// <param name="output">The output.</param>
-        /// <param name="color">The color.</param>
         public void WriteOutput(string output, Color color)
         {
             if (string.IsNullOrEmpty(output)) return;
@@ -438,33 +365,22 @@ namespace MoonShell
 
             Invoke((Action)(() =>
             {
-                //  Write the output.
                 richTextBoxConsole.SelectionColor = color;
                 richTextBoxConsole.SelectedText += output;
                 inputStart = richTextBoxConsole.SelectionStart;
             }));
         }
 
-        /// <summary>
-        /// Clears the output.
-        /// </summary>
         public void ClearOutput()
         {
             richTextBoxConsole.Clear();
             WriteInput(string.Empty, ForeColor, false);
         }
 
-        /// <summary>
-        /// Writes the input to the console control.
-        /// </summary>
-        /// <param name="input">The input.</param>
-        /// <param name="color">The color.</param>
-        /// <param name="echo">if set to <c>true</c> echo the input.</param>
         public void WriteInput(string input, Color color, bool echo)
         {
             Invoke((Action)(() =>
             {
-                //  Are we echoing?
                 if (echo)
                 {
                     richTextBoxConsole.SelectionColor = color;
@@ -474,24 +390,13 @@ namespace MoonShell
 
                 lastInput = input;
 
-                //  Write the input.
                 processInterface.WriteInput(input);
-
-                //  Fire the event.
                 FireConsoleInputEvent(input);
             }));
         }
 
-        
-
-        /// <summary>
-        /// Runs a process.
-        /// </summary>
-        /// <param name="fileName">Name of the file.</param>
-        /// <param name="arguments">The arguments.</param>
         public void StartProcess(string fileName, string arguments)
         {
-            //  Are we showing diagnostics?
             if (ShowDiagnostics)
             {
                 WriteOutput("Preparing to run " + fileName, DiagnosticsColor);
@@ -501,88 +406,45 @@ namespace MoonShell
                     WriteOutput("." + Environment.NewLine, DiagnosticsColor);
             }
 
-            //  Start the process.
             processInterface.StartProcess(fileName, arguments);
 
-            //  If we enable input, make the control not read only.
             if (IsInputEnabled)
                 richTextBoxConsole.ReadOnly = false;
         }
 
-        /// <summary>
-        /// Stops the process.
-        /// </summary>
         public void StopProcess()
         {
-            //  Stop the interface.
             processInterface.StopProcess();
         }
-        
-        /// <summary>
-        /// Fires the console output event.
-        /// </summary>
-        /// <param name="content">The content.</param>
+     
         private void FireConsoleOutputEvent(string content)
         {
-            //  Get the event.
             var theEvent = OnConsoleOutput;
             if (theEvent != null)
                 theEvent(this, new ConsoleEventArgs(content));
         }
 
-        /// <summary>
-        /// Fires the console input event.
-        /// </summary>
-        /// <param name="content">The content.</param>
         private void FireConsoleInputEvent(string content)
         {
-            //  Get the event.
             var theEvent = OnConsoleInput;
             if (theEvent != null)
                 theEvent(this, new ConsoleEventArgs(content));
         }
-
-        /// <summary>
-        /// The internal process interface used to interface with the process.
-        /// </summary>
+        
         private readonly ProcessInterface processInterface = new ProcessInterface();
         
-        /// <summary>
-        /// Current position that input starts at.
-        /// </summary>
         int inputStart = -1;
-
-        /// <summary>
-        /// The is input enabled flag.
-        /// </summary>
+        
         private bool isInputEnabled = true;
-
-        /// <summary>
-        /// The last input string (used so that we can make sure we don't echo input twice).
-        /// </summary>
+        
         private string lastInput;
-
-        /// <summary>
-        /// The key mappings.
-        /// </summary>
+        
         private List<KeyMapping> keyMappings = new List<KeyMapping>();
-
-        /// <summary>
-        /// Occurs when console output is produced.
-        /// </summary>
+        
         public event ConsoleEventHandler OnConsoleOutput;
-
-        /// <summary>
-        /// Occurs when console input is produced.
-        /// </summary>
+        
         public event ConsoleEventHandler OnConsoleInput;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to show diagnostics.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if show diagnostics; otherwise, <c>false</c>.
-        /// </value>
+        
         [Category("Console Control"), Description("Show diagnostic information, such as exceptions.")]
         public bool ShowDiagnostics
         {
@@ -590,12 +452,6 @@ namespace MoonShell
             set;
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is input enabled.
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if this instance is input enabled; otherwise, <c>false</c>.
-        /// </value>
         [Category("Console Control"), Description("If true, the user can key in input.")]
         public bool IsInputEnabled
         {
@@ -608,12 +464,6 @@ namespace MoonShell
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether [send keyboard commands to process].
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if [send keyboard commands to process]; otherwise, <c>false</c>.
-        /// </value>
         [Category("Console Control"), Description("If true, special keyboard commands like Ctrl-C and tab are sent to the process.")]
         public bool SendKeyboardCommandsToProcess
         {
@@ -635,49 +485,30 @@ namespace MoonShell
             set;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether this instance is process running.
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if this instance is process running; otherwise, <c>false</c>.
-        /// </value>
         [Browsable(false)]
         public bool IsProcessRunning
         {
             get { return processInterface.IsProcessRunning; }
         }
 
-        /// <summary>
-        /// Gets the internal rich text box.
-        /// </summary>
         [Browsable(false)]
         public RichTextBox InternalRichTextBox
         {
             get { return richTextBoxConsole; }
         }
 
-        /// <summary>
-        /// Gets the process interface.
-        /// </summary>
         [Browsable(false)]
         public ProcessInterface ProcessInterface
         {
             get { return processInterface; }
         }
 
-        /// <summary>
-        /// Gets the key mappings.
-        /// </summary>
         [Browsable(false)]
         public List<KeyMapping> KeyMappings
         {
             get { return keyMappings; }
         }
 
-        /// <summary>
-        /// Gets or sets the font of the text displayed by the control.
-        /// </summary>
-        /// <returns>The <see cref="T:System.Drawing.Font" /> to apply to the text displayed by the control. The default is the value of the <see cref="P:System.Windows.Forms.Control.DefaultFont" /> property.</returns>
         ///   <PermissionSet>
         ///   <IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
         ///   <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
@@ -688,23 +519,15 @@ namespace MoonShell
         {
             get
             {
-                //  Return the base class font.
                 return base.Font;
             }
             set
             {
-                //  Set the base class font...
                 base.Font = value;
-
-                //  ...and the internal control font.
                 richTextBoxConsole.Font = value;
             }
         }
 
-        /// <summary>
-        /// Gets or sets the background color for the control.
-        /// </summary>
-        /// <returns>A <see cref="T:System.Drawing.Color" /> that represents the background color of the control. The default is the value of the <see cref="P:System.Windows.Forms.Control.DefaultBackColor" /> property.</returns>
         ///   <PermissionSet>
         ///   <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
         ///   </PermissionSet>
@@ -712,15 +535,11 @@ namespace MoonShell
         {
             get
             {
-                //  Return the base class background.
                 return base.BackColor;
             }
             set
             {
-                //  Set the base class background...
                 base.BackColor = value;
-
-                //  ...and the internal control background.
                 richTextBoxConsole.BackColor = value;
             }
         }
@@ -740,8 +559,5 @@ namespace MoonShell
         }
     }
 
-    /// <summary>
-    /// Used to allow us to find resources properly.
-    /// </summary>
     public class Resfinder { }
 }
