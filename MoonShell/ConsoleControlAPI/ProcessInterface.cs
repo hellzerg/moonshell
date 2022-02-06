@@ -3,6 +3,7 @@ using System.Text;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.IO;
+using System.Windows.Forms;
 
 namespace MoonShell
 {
@@ -27,6 +28,7 @@ namespace MoonShell
         {
             if (e.UserState is string)
             {
+                //Console.WriteLine(e.UserState + " - [outputWorker_ProgressChanged]");
                 FireProcessOutputEvent(e.UserState as string);
             }
         }
@@ -41,6 +43,7 @@ namespace MoonShell
                 {
                     var builder = new StringBuilder();
                     count = outputReader.Read(buffer, 0, 1024);
+                    
                     builder.Append(buffer, 0, count);
                     outputWorker.ReportProgress(0, builder.ToString());
                 } while (count > 0);
@@ -77,22 +80,23 @@ namespace MoonShell
 
         public void StartProcess(string fileName, string arguments)
         {
-            var processStartInfo = new ProcessStartInfo(fileName, null);
+            var shellOptions = new ProcessStartInfo(fileName);
 
-            processStartInfo.UseShellExecute = false;
-            processStartInfo.ErrorDialog = false;
-            processStartInfo.CreateNoWindow = true;
-            processStartInfo.WorkingDirectory = arguments;
-            processStartInfo.StandardErrorEncoding = Encoding.UTF8;
-            processStartInfo.StandardOutputEncoding = Encoding.UTF8;
+            shellOptions.UseShellExecute = false;
+            shellOptions.ErrorDialog = false;
+            shellOptions.CreateNoWindow = true;
+            shellOptions.WorkingDirectory = arguments;
 
-            processStartInfo.RedirectStandardError = true;
-            processStartInfo.RedirectStandardInput = true;
-            processStartInfo.RedirectStandardOutput = true;
+            shellOptions.RedirectStandardError = true;
+            shellOptions.RedirectStandardInput = true;
+            shellOptions.RedirectStandardOutput = true;
+
+            shellOptions.StandardErrorEncoding = Encoding.UTF8;
+            shellOptions.StandardOutputEncoding = Encoding.UTF8;
 
             process = new Process();
             process.EnableRaisingEvents = true;
-            process.StartInfo = processStartInfo;
+            process.StartInfo = shellOptions;
             process.Exited += currentProcess_Exited;
 
             try
@@ -110,6 +114,7 @@ namespace MoonShell
             processArguments = arguments;
 
             inputWriter = process.StandardInput;
+
             outputReader = TextReader.Synchronized(process.StandardOutput);
             errorReader = TextReader.Synchronized(process.StandardError);
 
@@ -141,6 +146,7 @@ namespace MoonShell
 
         private void FireProcessOutputEvent(string content)
         {
+            //Console.WriteLine(content + " - [FireProcessOutputEvent]");
             var theEvent = OnProcessOutput;
             if (theEvent != null)
                 theEvent(this, new ProcessEventArgs(content));
@@ -175,7 +181,52 @@ namespace MoonShell
                 inputWriter.Flush();
             }
         }
-        
+
+        //~ProcessInterface()
+        //{
+        //    Dispose(true);
+        //}
+
+        //protected void Dispose(bool native)
+        //{
+        //    if (outputWorker != null)
+        //    {
+        //        outputWorker.Dispose();
+        //        outputWorker = null;
+        //    }
+        //    if (errorWorker != null)
+        //    {
+        //        errorWorker.Dispose();
+        //        errorWorker = null;
+        //    }
+        //    if (process != null)
+        //    {
+        //        process.Dispose();
+        //        process = null;
+        //    }
+        //    if (inputWriter != null)
+        //    {
+        //        inputWriter.Dispose();
+        //        inputWriter = null;
+        //    }
+        //    if (outputReader != null)
+        //    {
+        //        outputReader.Dispose();
+        //        outputReader = null;
+        //    }
+        //    if (errorReader != null)
+        //    {
+        //        errorReader.Dispose();
+        //        errorReader = null;
+        //    }
+        //}
+
+        //public void Dispose()
+        //{
+        //    Dispose(true);
+        //    GC.SuppressFinalize(this);
+        //}
+
         private Process process;
         
         private StreamWriter inputWriter;

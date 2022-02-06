@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Globalization;
 
 namespace MoonShell
 {
@@ -337,6 +338,9 @@ namespace MoonShell
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
 
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en-US");
+
             Options.ApplyTheme(this);
 
             helperMenu.Renderer = new ToolStripRendererMaterial();
@@ -376,6 +380,9 @@ namespace MoonShell
                     }
                 }
             }
+
+            
+            
         }
 
         private void MainForm_Load(object sender, EventArgs e)

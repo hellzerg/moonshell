@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Collections;
 using System.Threading;
+using System.Globalization;
 
 namespace MoonShell
 {
@@ -122,6 +123,7 @@ namespace MoonShell
         void richTextBoxConsole_KeyDown(object sender, KeyEventArgs e)
         {
             _addPlace = false;
+            bool isInReadOnlyZone = richTextBoxConsole.SelectionStart < inputStart;
 
             if (SendKeyboardCommandsToProcess && IsProcessRunning)
             {
@@ -147,9 +149,13 @@ namespace MoonShell
                 }
             }
 
-            if ((richTextBoxConsole.SelectionStart <= inputStart) && e.KeyCode == Keys.Back) e.SuppressKeyPress = true;
+            if ((richTextBoxConsole.SelectionStart <= inputStart) && e.KeyCode == Keys.Back) 
+            {
+                e.SuppressKeyPress = true;
+            } 
+               
 
-            if (richTextBoxConsole.SelectionStart < inputStart)
+            if (isInReadOnlyZone)
             {
                 //  Allow arrows and Ctrl-C.
                 if (!(e.KeyCode == Keys.Left ||
@@ -168,7 +174,7 @@ namespace MoonShell
                 e.Handled = true;
             }
 
-            if (e.KeyCode == Keys.Return)
+            if (e.KeyCode == Keys.Return && !isInReadOnlyZone)
             {
                 string input = string.Empty;
 
@@ -374,7 +380,8 @@ namespace MoonShell
         public void ClearOutput()
         {
             richTextBoxConsole.Clear();
-            WriteInput(string.Empty, ForeColor, false);
+            inputStart = 0;
+            //WriteInput(string.Empty, ForeColor, false);
         }
 
         public void WriteInput(string input, Color color, bool echo)
