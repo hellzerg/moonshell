@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
+using System.Globalization;
 
 namespace MoonShell
 {
@@ -11,6 +12,11 @@ namespace MoonShell
 
     public class ProcessInterface
     {
+        const string CMD_FILE = "cmd.exe";
+
+        // used for UTF-8 encoding for output
+        const string DEFAULT_ARGUMENT = "/c chcp 65001 > nul && cmd.exe";
+
         public ProcessInterface()
         {
             outputWorker.WorkerReportsProgress = true;
@@ -78,15 +84,17 @@ namespace MoonShell
             }
         }
 
-        public void StartProcess(string fileName, string arguments)
+        public void StartProcess(string workingDir)
         {
-            var shellOptions = new ProcessStartInfo(fileName);
+            var shellOptions = new ProcessStartInfo(CMD_FILE);
+           
+            shellOptions.Arguments = DEFAULT_ARGUMENT;
+            shellOptions.WorkingDirectory = workingDir;
 
             shellOptions.UseShellExecute = false;
             shellOptions.ErrorDialog = false;
             shellOptions.CreateNoWindow = true;
-            shellOptions.WorkingDirectory = arguments;
-
+           
             shellOptions.RedirectStandardError = true;
             shellOptions.RedirectStandardInput = true;
             shellOptions.RedirectStandardOutput = true;
@@ -96,8 +104,12 @@ namespace MoonShell
 
             process = new Process();
             process.EnableRaisingEvents = true;
+            
             process.StartInfo = shellOptions;
             process.Exited += currentProcess_Exited;
+
+            processFileName = CMD_FILE;
+            processArguments = DEFAULT_ARGUMENT;
 
             try
             {
@@ -105,13 +117,12 @@ namespace MoonShell
             }
             catch (Exception e)
             {
-                Trace.WriteLine("Failed to start process " + fileName + " with arguments '" + arguments + "'");
+                Trace.WriteLine("Failed to start process CMD");
                 Trace.WriteLine(e.ToString());
                 return;
             }
 
-            processFileName = fileName;
-            processArguments = arguments;
+            
 
             inputWriter = process.StandardInput;
 

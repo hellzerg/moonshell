@@ -170,11 +170,11 @@ namespace MoonShell
 
             if (!string.IsNullOrEmpty(placeDirectory))
             {
-                _currentTab.StartProcess("cmd", placeDirectory);
+                _currentTab.StartProcess(placeDirectory);
             }
             else
             {
-                _currentTab.StartProcess("cmd", WorkingDirectory);
+                _currentTab.StartProcess(WorkingDirectory);
             }
 
             tabConsoles.SelectedTab = tab;

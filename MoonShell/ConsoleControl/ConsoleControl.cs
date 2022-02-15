@@ -402,18 +402,14 @@ namespace MoonShell
             }));
         }
 
-        public void StartProcess(string fileName, string arguments)
+        public void StartProcess(string workingDir)
         {
             if (ShowDiagnostics)
             {
-                WriteOutput("Preparing to run " + fileName, DiagnosticsColor);
-                if (!string.IsNullOrEmpty(arguments))
-                    WriteOutput(" with arguments " + arguments + "." + Environment.NewLine, DiagnosticsColor);
-                else
-                    WriteOutput("." + Environment.NewLine, DiagnosticsColor);
+                WriteOutput("Preparing to run CMD with working directory " + workingDir, DiagnosticsColor);
             }
 
-            processInterface.StartProcess(fileName, arguments);
+            processInterface.StartProcess(workingDir);
 
             if (IsInputEnabled)
                 richTextBoxConsole.ReadOnly = false;
